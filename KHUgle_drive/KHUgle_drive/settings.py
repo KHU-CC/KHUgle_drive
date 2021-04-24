@@ -82,6 +82,8 @@ DATABASES = {
     }
 }
 
+# Customized user model
+AUTH_USER_MODEL = 'Driver.User'
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
