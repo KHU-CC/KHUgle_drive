@@ -1,6 +1,3 @@
 env/
-<<<<<<< HEAD
-__pycache__/
-=======
+KHUgle_drive/__pycache__/
 .vscode/
->>>>>>> 589c8ff12eb0ab8f3224bb061a2edb2f3d0660da
