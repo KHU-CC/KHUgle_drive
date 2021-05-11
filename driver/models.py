@@ -6,6 +6,7 @@ class Article(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     title = models.CharField(max_length=144, help_text='Enter a title')
     content = models.TextField(help_text='Enter a brief content message')
+    file = models.FileField()
     created_at = models.DateField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     #like_count =
@@ -14,6 +15,13 @@ class Article(models.Model):
 
     def __str__(self):
         return '[{}] {}'.format(self.user.username, self.title)
+
+# class File(models.Model):
+#     """Model representing file to upload or download"""
+#     uploaded_at = models.DateField(auto_now_add=True)
+#     updated_at = models.DateTimeField(auto_now=True)
+#     file = models.FileField()
+#     path = models.CharField(max_length=1000)
 
 # class Department(models.Model):
 #     """Model representing department imformation."""

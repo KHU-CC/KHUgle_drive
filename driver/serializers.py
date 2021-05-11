@@ -15,9 +15,22 @@ class ArticleSerializer(serializers.ModelSerializer):
             'id',
             'user',
             'title',
+            'file',
             'content',
             'created_at',
             'updated_at',
             #'department_id',
         )
         read_only_fields = ('created_at', 'updated_at',)
+
+# class FileSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = File
+#         fields = (
+#             'id',
+#             'uploaded_at',
+#             'updated_at',
+#             'file',
+#             'path',
+#         )
+#         read_only_fields = ('uploaded_at', 'updated_at')
