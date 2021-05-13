@@ -6,7 +6,7 @@ class Article(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     title = models.CharField(max_length=144, help_text='Enter a title')
     content = models.TextField(help_text='Enter a brief content message')
-    file = models.FileField()
+    file = models.FileField(null=True)
     created_at = models.DateField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     #like_count =
