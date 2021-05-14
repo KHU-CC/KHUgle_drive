@@ -11,11 +11,15 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
 from pathlib import Path
-import os
+import os, json
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+SECRETS_PATH = os.path.join(BASE_DIR, 'secrets.json')
 
+secrets = json.loads(open(SECRETS_PATH).read())
+def get_secret(setting, secrets=secrets):
+    return secrets[setting]
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
@@ -23,12 +27,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-)s+5d8mxc0&t$mok(f9oxyg07t+co5-dyn7bbs61n&q*7^k6)!'
 
-AWS_ACCESS_KEY_ID = 'access_key' # .csv 파일에 있는 내용을 입력 Access key ID
-AWS_SECRET_ACCESS_KEY = 'secret_access_key' # .csv 파일에 있는 내용을 입력 Secret access key
-AWS_REGION = 'aws_region' 
+AWS_ACCESS_KEY_ID = get_secret("aws_access_key_id") # .csv 파일에 있는 내용을 입력 Access key ID
+AWS_SECRET_ACCESS_KEY = get_secret("aws_secret_access_key") # .csv 파일에 있는 내용을 입력 Secret access key
+AWS_REGION = 'us-east-1' 
 
 ###S3 Storages
-AWS_STORAGE_BUCKET_NAME = 'bucket_name' # 설정한 버킷 이름
+AWS_STORAGE_BUCKET_NAME = 'khugledrives3' # 설정한 버킷 이름
 AWS_S3_CUSTOM_DOMAIN = '%s.s3.%s.amazonaws.com' % (AWS_STORAGE_BUCKET_NAME,AWS_REGION)
 AWS_S3_OBJECT_PARAMETERS = {
     'CacheControl': 'max-age=86400',
@@ -39,7 +43,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'static/driver/file')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["52.44.158.234"]
 
 
 # Application definition
