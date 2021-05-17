@@ -1,0 +1,60 @@
+{% extends 'account/basic.html' %}
+{% load static %}
+{% block content %}
+    <div class = "mid-layout">
+        <div class="grid-3">
+            <div class = "list">
+                <p id="cloud_compting" style="cursor: pointer" onclick="LoadSubList()">Cloud Computing</p>
+                <p style="cursor: pointer" onclick="console.log('hi2')">Recent Tech</p>
+            </div>
+            <div class = "board">
+                <h2 style='padding-left: 120px'>Board</h2>
+            </div>
+            <div class = "hotBoard">
+                <script>
+                        document.write("<h2 style='padding-left: 120px'>Hot Board</h2>");
+                        document.write("<ul style='list-style: none; padding: 10px 20px 20px 120px;'>");
+                        document.write('<li><a href="blank">Reserved requirements</a></li>');
+                        document.write('<li><a href="blank">Spot requirements</a></li>');
+                        document.write("</ul>");
+                </script>
+            </div>
+        </div>
+    </div>
+    <script>
+        (function() { // DON'T EDIT BELOW THIS LINE
+        var d = document, s = d.createElement('script');
+        s.src = 'https://disqus-test-tyrkecdgbq.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+        })();
+    </script>
+{% endblock %}
+<!-- 
+    <div class = "bottom-layout">
+        <div id="disqus_thread"></div>
+<script>
+    /**
+    *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+    *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables    */
+    /*
+    var disqus_config = function () {
+    this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+    this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+    };
+    */
+    (function() { // DON'T EDIT BELOW THIS LINE
+    var d = document, s = d.createElement('script');
+    s.src = 'https://disqus-test-tyrkecdgbq.disqus.com/embed.js';
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    </div>
+
+    <div class = "bottom-out-layout">
+        login-bottom-out
+    </div>
+</body>
+</html> -->

@@ -1,0 +1,243 @@
+/* same */
+
+body {
+    margin: 0;
+}
+
+.top-out-layout {
+    /* border: 1px solid red; */
+    height: 40px;
+
+    background-color: antiquewhite;
+}
+
+.top-layout {
+    border-bottom: 1px solid gray;
+    height: 100px;
+}
+
+.mid-layout {
+    /* border: 1px solid red; */
+    height: 690px;
+}
+
+.bottom-layout {
+    /* border: 1px solid red; */
+    height: 100px;
+}
+
+.bottom-out-layout {
+    /* border: 1px solid red; */
+    height: 40px;
+    background-color: antiquewhite;
+}
+
+/* spec */
+
+.top-layout-login {
+    /* border: 1px solid red; */
+    height: 100px;
+    width: 100%;
+    
+    text-align: center;
+    line-height: 100px;
+}
+
+.mid-layout-login {
+    /* border: 1px solid red; */
+    height: 640px;
+    width: 100%;
+    text-align: center;
+}
+
+.top-layout-login {
+    margin-top: 40px;
+}
+
+.log-img img {
+    object-fit: cover;
+    vertical-align: middle;
+    padding-bottom: 15px;
+    padding-right: 10px;
+}
+
+.top-layout-login .log-img {
+    display:inline-block;
+    /* border: 1px solid gray; */
+    text-align: center;
+    width: 50%;
+    height: 100px;
+}
+
+.mid-layout-login .login {
+    display:inline-block;
+    width: 400px;
+    height: 100%;
+    /* border: 1px solid gray; */
+}
+
+.login-id, .login-pw {
+    margin-top: 30px;
+}
+
+.log-img {
+    padding-right:55px;
+}
+
+.login-button button {
+    margin-top:30px;
+    width:229px;
+    height:34px;
+}
+
+.mid-layout-login .sign-in {
+    margin-top:30px;
+    border-top: 1px solid rgb(218, 216, 216);
+}
+
+.sign-in a:link {
+    color:gray;
+    float: right;
+}
+
+.outer-login a {
+    display:block;
+    margin-top:10px;
+    border:1px solid gray;
+    text-decoration: none;
+    color:black;
+    height:40px;
+    padding-top: 10px;
+    border-radius: 10px;
+    background-color: snow;
+}
+
+.bottom-out-layout .content {
+    float:right;
+    padding-right:10px;
+}
+
+.top-out-layout .content {
+    display:inline;
+    float:right;
+    padding-right:10px;
+}
+
+.top-layout .content {
+    display:inline;
+    float:right;
+    padding-right:5px;
+}
+
+.top-layout .content a{
+    text-decoration: none;
+    color:black;
+    font-size: 40px;
+    display:inline-flex;
+    border-left: 1px solid rgb(218, 216, 216);
+    padding-left: 10px;
+    padding-right: 10px;
+    height: 100px;
+    line-height: 100px;
+    font-weight: lighter;
+}
+
+.top-layout {
+    padding-left:20px;
+    line-height: 100px;
+}
+
+.list {
+    text-align: left;
+    padding-left: 10px;
+    border:1px solid gray;
+    /* width:250px; */
+    height: 670px;
+}
+
+.list a {
+    display:block;
+    margin: 25px 5px 25px 5px;
+    font-size: 40px;
+    text-decoration: none;
+    color:black;
+    font-weight: lighter;
+    /* border: 1px solid gray; */
+    border-radius: 10px;
+}
+
+.grid-2 {
+    width: 100%;
+    display:grid;
+    grid-template-columns: 1.5fr 9fr;
+}
+
+.grid-3 {
+    width: 100%;
+    display:grid;
+    grid-template-columns: 1.5fr 5fr 3fr;
+}
+
+.grid-5 {
+    /* border:1px solid gray; */
+    border-top:1px solid gray;
+    border-bottom: 1px solid gray;
+    width: 100%;
+    display:grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+    text-align: center;
+}
+
+.grid-5 .items:hover{
+    background-color: mintcream;
+}
+
+.grid-5 .items img {
+    object-fit: cover;
+    width:200px;
+    display:block;
+    border-radius: 20px;
+    padding: 10px 10px 10px 10px;
+    margin: 0px auto;
+}
+
+.top-layout .content img {
+    object-fit: cover;
+    width:50px;
+    display:block;
+    border-radius: 70%;
+    padding: 10px 10px 10px 20px;
+    margin: 0px auto;
+}
+
+.board ul li{
+    width: 700px;
+    border-top: 1px solid gray;
+    padding: 5px 0px 5px 0px;
+}
+
+.board ul li a, .hotBoard ul li a {
+    text-decoration: none;
+    color:gray;
+    font-size: 20px;   
+}black
+
+.board h2 {
+    font-weight: normal;
+    font-size: 30px;
+    color: black;
+}
+
+.hotBoard ul li {
+    width: 300px;
+    border-top: 1px solid gray;
+    padding: 5px 0px 5px 0px;
+}
+
+.top-layout .content a:hover {
+    background-color: rgb(250, 241, 228);
+}
+
+.top-out-layout .content a {
+    margin-left: 10px;
+}
