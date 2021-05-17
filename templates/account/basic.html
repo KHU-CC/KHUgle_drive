@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+{% load static %}
+<html>
+<head>
+    <title>KHUGLE DRIVE - D조</title>
+    <meta charset="UTF-8">
+    <!-- <link rel="stylesheet" href="./style.css"> -->
+    <link rel="stylesheet" href="{% static './style.css' %}">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="{% static './load.js' %}"></script>
+</head>
+<!-- ployfill is a library supporter. -->
+<body>
+    <div class = "top-out-layout">
+        <div class = "content">
+            <a>Help</a>
+            <a href="{% url 'account:logoutPage' %}">logout</a>
+        </div>
+    </div>
+
+    <div class = "top-layout">
+        <div style="padding-right: 3px;" class = "log-img">
+            <img src="{% static './img/logo.png' %}" style="padding-bottom: 15px; padding-right: 10px; width: 40px;">
+            <a style="color:black; text-decoration: none;" href="privatePage"><h1 style="display: inline; font-size:40px">KHUGLE DRIVE</h1></a>
+            <div class ="content">
+                <a href="privatePage">Private</a>
+                <a href="groupPage">Group</a>
+                <a href="groupCommunityPage">GroupCommunity</a>
+                <a href="userProofile">DevProfile<img src="{% static './img/profile.png' %}"></a>
+            </div>
+        </div>
+    </div>
+
+    {% block content %}
+    {% endblock %}
+
+    <div class = "bottom-out-layout">
+        <div id='disqus_thread'></div>
+        <!-- login-bottom-out -->
+    </div>
+</body>
+</html>

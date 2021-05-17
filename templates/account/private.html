@@ -1,0 +1,41 @@
+{% extends 'account/basic.html' %}
+{% load static %}
+{% block content %}
+    <div class = "mid-layout">
+        <div class="grid-2">
+            <div class = "list">
+                <a href="blank">Upload</a>
+                <a href="blank">Directory</a>
+                <!-- <form action="/action_page.php">
+                    <input type="file" id="myFile" name="filename">
+                    <input type="submit">
+                </form> -->
+                <input type="file" name="file" id="imageFileOpenInput" accept="image/*">
+                
+            </div>
+            <div class = "grid-5">
+                <div class ="items"><a href="blank"><img src="{% static './img/folder.png' %}"></a>folder1</div>
+                <div class ="items"><a href="blank"><img src="{% static './img/folder.png' %}"></a>folder2</div>
+                <div class ="items"><a href="blank"><img src="{% static './img/folder.png' %}"></a>folder3</div>
+                <div class ="items"><a href="blank"><img src="{% static './img/file.jpg' %}"></a>item1</div>
+                <div class ="items"><a href="blank"><img src="{% static './img/file.jpg' %}"></a>item2</div>
+                <div class ="items"><a href="blank"><img src="{% static './img/file.jpg' %}"></a>item3</div>
+                <div class ="items"><a href="blank"><img src="{% static './img/file.jpg' %}"></a>item4</div>
+                <div class ="items"><a href="blank"><img src="{% static './img/file.jpg' %}"></a>item5</div>
+                <div class ="items"><a href="blank"><img src="{% static './img/file.jpg' %}"></a>item6</div>
+                <div class ="items"><a href="blank"><img src="{% static './img/file.jpg' %}"></a>item7</div>
+                <div class ="items"><a href="blank"><img src="{% static './img/file.jpg' %}"></a>item8</div>
+                <div class ="items"><a href="blank"><img src="{% static './img/file.jpg' %}"></a>item9</div>
+                <div class ="items"><a href="blank"><img src="{% static './img/file.jpg' %}"></a>item10</div>
+            </div>
+        </div>
+    </div>
+    <script>
+        (function() { // DON'T EDIT BELOW THIS LINE
+        var d = document, s = d.createElement('script');
+        s.src = 'https://disqus-test-tyrkecdgbq.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+        })();
+    </script>
+{% endblock %}
