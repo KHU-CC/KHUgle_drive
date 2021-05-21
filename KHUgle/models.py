@@ -1,3 +1,52 @@
 from django.db import models
 
-# Create your models here.
+# File model을 이용하여 file의 정보를 담는다. (file, filename, filepath)
+# Notice model을 이용하여 file name을 기준으로 notice를 정리한다.
+# Filelog model을 이용하여 notice와 연결하여 file의 변화 상태를 기록, 보여준다.
+# Post model을 이용하여 community 기능을 한다.
+
+
+# class File(models.Model):
+#     file = models.FileField()
+#     file_path = models.CharField(max_length=1000)
+    
+#     def __str__(self):
+#         # shell에서 DB확인을 위해 출력 용도로 작성
+#         return self.title
+
+
+
+# class Notice(models.Model):
+#     """Model representing the state of file from S3 bucket"""
+#     file_id = models.ForeignKey(File)
+    
+#     def __str__(self):
+#         # shell에서 DB확인을 위해 출력 용도로 작성
+#         return self.title
+    
+
+
+
+# class Filelog(models.Model):
+#     """Model representing the log of file from S3 bucket"""
+#     notice = models.ForeignKey(Notice, on_delete=models.CASCADE)
+#     content = models.TextField()
+#     created_at = models.DateTimeField()
+    
+#     def __str__(self):
+#         # shell에서 DB확인을 위해 출력 용도로 작성
+#         return self.title
+
+
+
+class Post(models.Model):
+    """Model"""
+    #author = models.ForeignKey(User, on_delete=models.CASCADE) 사용자 모델이 만들어지면!
+    title = models.CharField(max_length=144)
+    content = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        # shell에서 DB확인을 위해 출력 용도로 작성
+        return self.title
