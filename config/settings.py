@@ -110,6 +110,12 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'ko-kr'
 
+#로그인 성공 후 이동하는 경로
+LOGIN_REDIRECT_URL = '/'
+
+#로그아웃 후 이동하는 경로
+LOGOUT_REDIRECT_URL = '/'
+
 TIME_ZONE = 'Asia/Seoul'
 
 USE_I18N = True
