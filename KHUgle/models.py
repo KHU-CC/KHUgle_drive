@@ -40,7 +40,7 @@ from django.db import models
 
 
 class Post(models.Model):
-    """Model"""
+    """Model representing community posts"""
     #author = models.ForeignKey(User, on_delete=models.CASCADE) 사용자 모델이 만들어지면!
     title = models.CharField(max_length=144)
     content = models.TextField()

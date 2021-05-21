@@ -20,5 +20,5 @@ from KHUgle import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('KHUgle/', include('KHUgle.urls')),
-    path('bucket/', include('bucket.urls')),
+    #path('bucket/', include('bucket.urls')),
 ]
