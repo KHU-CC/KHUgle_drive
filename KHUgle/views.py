@@ -5,6 +5,12 @@ from django.utils import timezone
 from .models import Post
 from .forms import PostForm
 
+
+def main(request):
+    """사이트 첫 페이지"""
+    return render(request, 'KHUgle/main.html')
+
+
 def index(request):
     """커뮤니티 인덱스 페이지"""
     page = request.GET.get('page', '1')             # 페이지

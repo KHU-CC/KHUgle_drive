@@ -18,7 +18,9 @@ from django.urls import path, include
 from KHUgle import views
 
 urlpatterns = [
+    path('',views.main, name='main'),                 #초기 페이지인데 새로 만들어줘야한다. Settings의 LOGIN/LOGOUT REDIRECT도 고려
     path('admin/', admin.site.urls),
     path('KHUgle/', include('KHUgle.urls')),
+    path('account/', include('account.urls')),
     #path('bucket/', include('bucket.urls')),
 ]

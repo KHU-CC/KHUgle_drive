@@ -111,6 +111,12 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'ko-kr'
 
+#로그인 성공 후 이동하는 경로
+LOGIN_REDIRECT_URL = '/KHUgle'
+
+#로그아웃 후 이동하는 경로
+LOGOUT_REDIRECT_URL = '/'
+
 TIME_ZONE = 'Asia/Seoul'
 
 USE_I18N = True
@@ -133,10 +139,10 @@ STATICFILES_DIRS = [
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-#TEST CODE
+'''TEST CODE
 import boto3
 session = boto3.Session()
 client = session.client('s3')
 client.create_bucket(Bucket='testbucket05220355')
 res = client.upload_file('KHUgle/buckettest.txt','testbucket05220355','testkey1.txt')
-#TEST CODE END
+TEST CODE END'''

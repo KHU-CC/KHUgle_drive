@@ -1,0 +1,42 @@
+{% load static %}
+<!doctype html>
+<html lang="ko">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.min.css' %}">
+    <!-- pybo CSS -->
+    <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+    <title>Hello KHUgle</title>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
+        <a class="navbar-brand" href="#">KHUgle</a>
+        <button class="navbar-toggler ml-auto" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse flex-grow-0" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item ">
+                    <!-- EMPTY -->
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+<div class="container my-3">
+    <h1>KHUgle Drive</h1>
+ 
+    <h2>MAIN PAGE</h2>
+ 
+    <a href="{% url 'account:login' %}">시작하기</a>
+</div>
+
+<script src = "{% static 'js/jquery-3.6.0.min.js' %}"></script>
+<script src = "{% static 'js/bootstrap.min.js' %}"></script>
+
+
+</body>
+</html>
