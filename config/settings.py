@@ -39,10 +39,10 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'KHUgle.apps.KhugleConfig',
     'bucket.apps.BucketConfig',
-    'god.apps.GodConfig',
+    'account.apps.AccountConfig',
 ]
 
-AUTH_USER_MODEL = 'god.CustomUser'
+AUTH_USER_MODEL = 'account.CustomUser'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
