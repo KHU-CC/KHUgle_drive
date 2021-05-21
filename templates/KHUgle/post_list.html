@@ -1,4 +1,5 @@
 {% extends 'Base/base.html' %}
+{% load KHUgle_filter %}
 {% block content %}
 <div class="container my-3">
     <table class="table">
@@ -9,11 +10,12 @@
             <th>Created</th>
         </tr>
         </thead>
+
         <tbody>
         {% if post_list %}
         {% for post in post_list %}
         <tr>
-            <td>{{ forloop.counter }}</td>
+            <td>{{ post_list.paginator.count|sub:post_list.start_index|sub:forloop.counter0|add:1 }}</td>
             <td>
                 <a href="{% url 'KHUgle:detail' post.id %}">{{ post.title }}</a>
             </td>
@@ -27,6 +29,44 @@
         {% endif %}
         </tbody>
     </table>
+    
+    <ul class="pagination justify-content-center">
+        <!-- 이전페이지 -->
+        {% if post_list.has_previous %}
+        <li class="page-item">
+            <a class="page-link" href="?page={{ post_list.previous_page_number }}">Previous</a>
+        </li>
+        {% else %}
+        <li class="page-item disabled">
+            <a class="page-link" tabindex="-1" aria-disabled="true" href="#">Previous</a>
+        </li>
+        {% endif %}
+        <!-- 페이지리스트 -->
+        {% for page_number in post_list.paginator.page_range %}
+        {% if page_number >= post_list.number|add:-5 and page_number <= post_list.number|add:5 %}
+            {% if page_number == post_list.number %}
+            <li class="page-item active" aria-current="page">
+                <a class="page-link" href="?page={{ page_number }}">{{ page_number }}</a>
+            </li>
+            {% else %}
+            <li class="page-item">
+                <a class="page-link" href="?page={{ page_number }}">{{ page_number }}</a>
+            </li>
+            {% endif %}
+        {% endif %}
+        {% endfor %}
+        <!-- 다음페이지 -->
+        {% if post_list.has_next %}
+        <li class="page-item">
+            <a class="page-link" href="?page={{ post_list.next_page_number }}">Next</a>
+        </li>
+        {% else %}
+        <li class="page-item disabled">
+            <a class="page-link" tabindex="-1" aria-disabled="true" href="#">Next</a>
+        </li>
+        {% endif %}
+    </ul>
+
     <a href="{% url 'KHUgle:post_create' %}" class="btn btn-primary">Post</a>
 </div>
 {% endblock %}
