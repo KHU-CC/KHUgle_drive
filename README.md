@@ -3,8 +3,19 @@ Main project repository
 
 ## Start setup
 1. python -m venv env
-2. pip install django
-3. pip install djangorestframework
-4. pip install boto3
-5. pip install django-storages
-6. pip install awscli
+2. source env/bin/activate
+3. pip install -r requirement.txt
+
+## AWS credential setup
+$ cd ../
+$ mkdir .aws
+$ touch credentials.ini
+$ vim credentials.ini
+
+[default]
+aws_access_key_id = {aws_access_key_id}
+aws_secret_access_key = {aws_secret_access_key}
+aws_session_token = {aws_session_token}
+
+$ python manage.py migrate
+$ python manage.py runserver 0:8000
