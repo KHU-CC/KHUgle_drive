@@ -1,4 +1,5 @@
 from django.shortcuts import render, get_object_or_404, redirect
+from django.core.paginator import Paginator
 from django.http import HttpResponse
 from django.utils import timezone
 from .models import Post
@@ -6,8 +7,14 @@ from .forms import PostForm
 
 def index(request):
     """커뮤니티 인덱스 페이지"""
+    page = request.GET.get('page', '1')             # 페이지
+
     post_list = Post.objects.order_by('-created_at')  #post_list는 생성 시간 역순 정렬
-    context = {'post_list': post_list}                  #context의 'post_list' 키에 담기
+
+    paginator = Paginator(post_list, 10)            # 페이지에 10개씩 묶기
+    page_obj = paginator.get_page(page)
+    context = {'post_list': page_obj}               # page_obj를 불러오기
+                                                    # 불러오는 방식 --> localhost:8000/KHUgle/?page=1
     
     return render(request, 'KHUgle/post_list.html', context)   #해당 html를 불러오며 context 전송
 

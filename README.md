@@ -1,10 +1,28 @@
 # KHUgle_drive
-Main project repository
 
 ## Start setup
 1. python -m venv env
-2. pip install django
-3. pip install djangorestframework
-4. pip install boto3
-5. pip install django-storages
-6. pip install awscli
+2. source env/bin/activate
+3. pip install -r requirement.txt
+
+## AWS credential setup
+$ aws configure   
+aws_access_key_id = {aws_access_key_id}   
+aws_secret_access_key = {aws_secret_access_key}  
+$ cd ~/.aws   
+$ vim credentials   
+aws_session_token = {aws_session_token}   
+
+## Run Server   
+$ python manage.py migrate   
+$ python manage.py runserver 0:8000   
+
+## Dependancy
+[LINK](https://github.com/KHU-CC/KHUgle_drive/blob/master/requirements.txt)   
+
+## Team Members
+* 기상윤   
+* 김현기   
+* 송재혁   
+* 임태민   
+* 최현준   
