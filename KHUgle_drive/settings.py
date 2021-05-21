@@ -44,7 +44,7 @@ AWS_S3_OBJECT_PARAMETERS = {
 }
 AWS_DEFAULT_ACL = None
 AWS_LOCATION = 'static'
-#DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'static/driver/file')
 
 # SECURITY WARNING: don't run with debug turned on in production!
@@ -54,12 +54,16 @@ ALLOWED_HOSTS = ["52.44.158.234"]
 
 # TEST CODE
 # https://dev-navill.tistory.com/12
-
+# https://nachwon.github.io/django-deploy-7-s3/
 session = boto3.Session()
-s3 = session.resource('s3')
-bucket = s3.Bucket(AWS_STORAGE_BUCKET_NAME)
-for obj in bucket.objects.all():
-    print(obj.key)
+client = session.client('s3')
+client.create_bucket(Bucket='testbucket1f1f1f3h')
+
+res = client.upload_file('KHUgle_drive/test2.txt','testbucket1f1f1f3h','test.txt')
+
+#bucket = s3.Bucket(AWS_STORAGE_BUCKET_NAME)
+#for obj in bucket.objects.all():
+#    print(obj.key)
 
 # TEST CODE END
 
@@ -162,7 +166,10 @@ USE_TZ = True
 
 #STATIC_URL = 'https://%s/%s/' % (AWS_S3_CUSTOM_DOMAIN, 'static')
 STATIC_URL = '/static/'
+
+#활성화 시 css 오류
 #STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+
 STATICFILES_DIRS = [
     STATIC_DIR,
 ]
