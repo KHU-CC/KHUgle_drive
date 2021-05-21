@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-e)+typ*%q%=-9=5%phkw#e24&tiag4^1xro24yo-cn$_amas*o
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["184.73.206.39"]
 
 
 # Application definition
@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'storages', #for using s3 
     'KHUgle.apps.KhugleConfig',
     'bucket.apps.BucketConfig',
     'account.apps.AccountConfig',
@@ -131,3 +132,11 @@ STATICFILES_DIRS = [
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+#TEST CODE
+import boto3
+session = boto3.Session()
+client = session.client('s3')
+client.create_bucket(Bucket='testbucket05220355')
+res = client.upload_file('KHUgle/buckettest.txt','testbucket05220355','testkey1.txt')
+#TEST CODE END
