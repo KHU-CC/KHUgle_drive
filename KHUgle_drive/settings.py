@@ -29,10 +29,11 @@ LOGOUT_REDIRECT_URL = '/account/login'
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-)s+5d8mxc0&t$mok(f9oxyg07t+co5-dyn7bbs61n&q*7^k6)!'
+SECRET_KEY = get_secret("django_secret_key")
 
 AWS_ACCESS_KEY_ID = get_secret("aws_access_key_id") # .csv 파일에 있는 내용을 입력 Access key ID
 AWS_SECRET_ACCESS_KEY = get_secret("aws_secret_access_key") # .csv 파일에 있는 내용을 입력 Secret access key
+AWS_SESSION_TOKEN = get_secret("aws_session_token")
 AWS_REGION = 'us-east-1' 
 
 ###S3 Storages
@@ -41,7 +42,9 @@ AWS_S3_CUSTOM_DOMAIN = '%s.s3.%s.amazonaws.com' % (AWS_STORAGE_BUCKET_NAME,AWS_R
 AWS_S3_OBJECT_PARAMETERS = {
     'CacheControl': 'max-age=86400',
 }
-DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+AWS_DEFAULT_ACL = None
+AWS_LOCATION = 'static'
+#DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'static/driver/file')
 
 # SECURITY WARNING: don't run with debug turned on in production!
@@ -49,6 +52,16 @@ DEBUG = True
 
 ALLOWED_HOSTS = ["52.44.158.234"]
 
+# TEST CODE
+# https://dev-navill.tistory.com/12
+
+session = boto3.Session()
+s3 = session.resource('s3')
+bucket = s3.Bucket(AWS_STORAGE_BUCKET_NAME)
+for obj in bucket.objects.all():
+    print(obj.key)
+
+# TEST CODE END
 
 # Application definition
 
@@ -61,9 +74,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'driver',
-
     'account', # account app
     'django_extensions',
+    'storages' #for s3 upload
 ]
 
 MIDDLEWARE = [
@@ -147,11 +160,13 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 # https://velog.io/@hwang-eunji/aws-s3-%EB%AF%B8%EB%94%94%EC%96%B4-%EC%84%9C%EB%B2%84-%EC%84%A4%EC%A0%95-django-%EC%84%A4%EC%A0%95
 
-STATIC_URL = 'https://%s/%s/' % (AWS_S3_CUSTOM_DOMAIN, 'static')
-STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+#STATIC_URL = 'https://%s/%s/' % (AWS_S3_CUSTOM_DOMAIN, 'static')
+STATIC_URL = '/static/'
+#STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 STATICFILES_DIRS = [
     STATIC_DIR,
 ]
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfile') #for release
 STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
