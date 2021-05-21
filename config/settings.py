@@ -111,7 +111,7 @@ AUTH_PASSWORD_VALIDATORS = [
 LANGUAGE_CODE = 'ko-kr'
 
 #로그인 성공 후 이동하는 경로
-LOGIN_REDIRECT_URL = '/'
+LOGIN_REDIRECT_URL = '/KHUgle'
 
 #로그아웃 후 이동하는 경로
 LOGOUT_REDIRECT_URL = '/'
