@@ -1,6 +1,8 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponse
+from django.utils import timezone
 from .models import Post
+from .forms import PostForm
 
 def index(request):
     """커뮤니티 인덱스 페이지"""
@@ -18,3 +20,16 @@ def detail(request, post_id):
     return render(request, 'KHUgle/post_detail.html', context)
 
 
+def post_create(request):
+    form = PostForm()
+    if request.method == 'POST':
+        form = PostForm(request.POST)
+        if form.is_valid():
+            post = form.save(commit=False)
+            post.created_at = timezone.now()
+            post.save()
+            return redirect('KHUgle:index')
+    else:
+        form = PostForm()
+    context = {'form': form}
+    return render(request, 'KHUgle/post_form.html', context)

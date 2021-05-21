@@ -6,4 +6,5 @@ app_name = 'KHUgle'         #KHUgle이라는 url 이름을 선언하여 url mapp
 urlpatterns = [
     path('', views.index, name='index'),                      #KHUgle의 인덱스 페이지 --> view로 매핑
     path('<int:post_id>/', views.detail, name='detail'),       #KHUgle의 post detail 페이지
+    path('post/create', views.post_create, name='post_create'),
 ]
