@@ -25,13 +25,15 @@
             </ul>
         </div>
     </nav>
-
-<div class="container my-3">
-    <h1>KHUgle Drive</h1>
- 
-    <h2>MAIN PAGE</h2>
- 
-    <a href="{% url 'account:login' %}">시작하기</a>
+<div class="container text-center" style="height:100%">
+    <div class="item" style="margin-top:180px; margin-bottom:20px;">
+        <p style="font-size:100px; font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;font-weight:bold;">KHUgle Drive</p>
+    </div>
+    <div class="item" style="margin:auto">
+        <p class="lead">
+            <a href="{% url 'account:login' %}" class="btn btn-lg btn-outline-dark">시작하기</a>
+        </p>
+    </div>
 </div>
 
 <script src = "{% static 'js/jquery-3.6.0.min.js' %}"></script>
