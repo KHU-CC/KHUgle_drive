@@ -1,0 +1,10 @@
+{% if post_list %}
+    <ul>
+    {% for post in post_list %}
+        <!-- <li><a href="/KHUgle/{{ post.id }}/">{{ post.title }}</a></li> -->
+        <li><a href="{% url 'KHUgle:detail' post.id %}">{{ post.title }}</a></li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>EMPTY</p>
+{% endif %}
