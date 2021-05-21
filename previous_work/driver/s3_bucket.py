@@ -31,6 +31,6 @@ def list_bucket():
     res = s3.list_buckets()
     return [bucket['Name'] for bucket in res['Buckets']]
 
-res = upload_file('C:\\Users\\dizzi\\Desktop\\KHUgle_drive\\static\\driver\\file\\text.txt', 'khugle-drive-test', 'image/test4.txt')
+#res = upload_file('C:\\Users\\dizzi\\Desktop\\KHUgle_drive\\static\\driver\\file\\text.txt', 'khugle-drive-test', 'image/test4.txt')
 
 #res = upload_file(os.path.join(MEDIA_DIR, 'text.txt'), 'khugle-drive-test', 'image/test.txt')
