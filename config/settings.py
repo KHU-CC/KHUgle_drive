@@ -37,10 +37,12 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'KHUgle',
-    'bucket',
-
+    'KHUgle.apps.KhugleConfig',
+    'bucket.apps.BucketConfig',
+    'god.apps.GodConfig',
 ]
+
+AUTH_USER_MODEL = 'god.CustomUser'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
