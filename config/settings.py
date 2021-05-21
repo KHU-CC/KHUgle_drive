@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'KHUgle.apps.KhugleConfig',
     'bucket.apps.BucketConfig',
     'account.apps.AccountConfig',
+    'rest_framework'
 ]
 
 AUTH_USER_MODEL = 'account.CustomUser'
