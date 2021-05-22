@@ -40,7 +40,8 @@ INSTALLED_APPS = [
     'KHUgle.apps.KhugleConfig',
     'bucket.apps.BucketConfig',
     'account.apps.AccountConfig',
-    'rest_framework'
+    'rest_framework',
+    'boto3',
 ]
 
 AUTH_USER_MODEL = 'account.CustomUser'
