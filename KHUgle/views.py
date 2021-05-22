@@ -1,3 +1,4 @@
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404, redirect
 from django.core.paginator import Paginator
 from django.http import HttpResponse
@@ -6,11 +7,12 @@ from .models import Post
 from .forms import PostForm
 
 
+
 def main(request):
     """사이트 첫 페이지"""
     return render(request, 'KHUgle/main.html')
 
-
+@login_required(login_url='account:login')
 def index(request):
     """커뮤니티 인덱스 페이지"""
     page = request.GET.get('page', '1')             # 페이지
@@ -24,7 +26,7 @@ def index(request):
     
     return render(request, 'KHUgle/post_list.html', context)   #해당 html를 불러오며 context 전송
 
-
+@login_required(login_url='account:login')
 def detail(request, post_id):
     """커뮤니티에 포스팅 된 글에 접속한 페이지"""
     post = get_object_or_404(Post, pk=post_id)             # DB에서 가져온다.
@@ -33,12 +35,14 @@ def detail(request, post_id):
     return render(request, 'KHUgle/post_detail.html', context)
 
 
+@login_required(login_url='account:login')
 def post_create(request):
     form = PostForm()
     if request.method == 'POST':
         form = PostForm(request.POST)
         if form.is_valid():
             post = form.save(commit=False)
+            post.author = request.user
             post.created_at = timezone.now()
             post.save()
             return redirect('KHUgle:index')
