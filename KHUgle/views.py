@@ -1,16 +1,17 @@
-from django.contrib.auth.decorators import login_required
-from django.shortcuts import render, get_object_or_404, redirect
-from django.core.paginator import Paginator
-from django.http import HttpResponse
-from django.utils import timezone
 from .models import Post
 from .forms import PostForm
-
+from django.contrib.auth.decorators import login_required
+from django.contrib import messages
+from django.core.paginator import Paginator
+from django.http import HttpResponse
+from django.shortcuts import render, get_object_or_404, redirect
+from django.utils import timezone
 
 
 def main(request):
     """사이트 첫 페이지"""
     return render(request, 'KHUgle/main.html')
+
 
 @login_required(login_url='account:login')
 def index(request):
@@ -25,6 +26,7 @@ def index(request):
                                                     # 불러오는 방식 --> localhost:8000/KHUgle/?page=1
     
     return render(request, 'KHUgle/post_list.html', context)   #해당 html를 불러오며 context 전송
+
 
 @login_required(login_url='account:login')
 def detail(request, post_id):
@@ -50,3 +52,34 @@ def post_create(request):
         form = PostForm()
     context = {'form': form}
     return render(request, 'KHUgle/post_form.html', context)
+
+
+@login_required(login_url='account:login')
+def post_modify(request, post_id):
+    post = get_object_or_404(Post, pk=post_id)
+    if request.user != post.author:
+        messages.error(request, 'Permission Error')
+        return redirect('KHUgle:detail', post_id=post.id)
+
+    if request.method == "POST":
+        form = PostForm(request.POST, instance=post)
+        if form.is_valid():
+            post = form.save(commit=False)
+            post.author = request.user
+            post.updated_at = timezone.now()  # 수정일시 저장
+            post.save()
+            return redirect('KHUgle:detail', post_id=post.id)
+    else:
+        form = PostForm(instance=post)
+    context = {'form': form}
+    return render(request, 'KHUgle/post_form.html', context)
+
+
+@login_required(login_url='account:login')
+def post_delete(request, post_id):
+    post = get_object_or_404(Post, pk=post_id)
+    if request.user != post.author:
+        messages.error(request, 'Permission Error')
+        return redirect('KHUgle:detail', post_id=post.id)
+    post.delete()
+    return redirect('KHUgle:index')

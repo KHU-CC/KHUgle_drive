@@ -1,5 +1,15 @@
 {% extends 'Base/base.html' %}
 {% block content %}
+
+<!-- {% if messages %}
+    <div class="alert alert-danger my-3" role="alert">
+    {% for message in messages %}
+        <strong>{{ message.tags }}</strong>
+        <ul><li>{{ message.message }}</li></ul>
+    {% endfor %}
+    </div>
+{% endif %} -->
+
 <div class="container my-3">
     <h2 class="border-bottom py-2">{{ post.title }}</h2>
     <div class="card my-3">
@@ -11,7 +21,36 @@
                     <div>{{ post.created_at }}</div>
                 </div>
             </div>
+            {% if post.updated_at %}
+            <div class="d-flex justify-content-end">
+                <div class="badge badge-light p-2 text-left">
+                    <div class="mb-2">Updated</div>
+                    <div>{{ post.updated_at }}</div>
+                </div>
+            </div>
+            {% endif %}
+            {% if request.user == post.author %}
+            <div class="my-3">
+                <a href="{% url 'KHUgle:post_modify' post.id  %}" 
+                class="btn btn-sm btn-outline-secondary">Modify</a>
+                <a href="#" class="delete btn btn-sm btn-outline-secondary"
+                data-uri="{% url 'KHUgle:post_delete' post.id  %}">Delete</a>
+            </div>
+            {% endif %}
+
         </div>
     </div>
 </div>
+{% endblock %}
+
+{% block script %}
+<script type='text/javascript'>
+    $(document).ready(function(){
+        $(".delete").on('click', function() {
+            if(confirm("정말로 삭제하시겠습니까?")) {
+                location.href = $(this).data('uri');
+            }
+        });
+    });
+    </script>
 {% endblock %}

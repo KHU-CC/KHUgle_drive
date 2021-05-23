@@ -46,7 +46,7 @@ class Post(models.Model):
     title = models.CharField(max_length=144)
     content = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
+    updated_at = models.DateTimeField(null=True, blank=True)
 
     def __str__(self):
         # shell에서 DB확인을 위해 출력 용도로 작성
