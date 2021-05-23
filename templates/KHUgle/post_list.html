@@ -6,7 +6,8 @@
         <thead>
         <tr class="thead-dark">
             <th>Number</th>
-            <th>Title</th>
+            <th style="width:50%">Title</th>
+            <th>Author</th>
             <th>Created</th>
         </tr>
         </thead>
@@ -14,12 +15,13 @@
         <tbody>
         {% if post_list %}
         {% for post in post_list %}
-        <tr>
+        <tr class="text-center">
             <td>{{ post_list.paginator.count|sub:post_list.start_index|sub:forloop.counter0|add:1 }}</td>
-            <td>
+            <td class="text-left">
                 <a href="{% url 'KHUgle:detail' post.id %}">{{ post.title }}</a>
             </td>
-            <td>{{ post.created_at }}</td>
+            <td class="text-left">{{ post.author.username }} </td>
+            <td class="text-left">{{ post.created_at }}</td>
         </tr>
         {% endfor %}
         {% else %}
