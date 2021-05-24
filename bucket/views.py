@@ -13,7 +13,7 @@ class FileView(viewsets.ModelViewSet):
     serializer_class = FileSerializer
     permission_classes = (permissions.IsAuthenticated,)
 
-     def upload(self, serializer):
+    def upload(self, serializer):
         if serializer.is_valid():
             serializer.save()
             file_path = serializer.data.get('file')
