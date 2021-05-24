@@ -4,10 +4,11 @@
 <div class="container my-3">
     <table class="table">
         <thead>
-        <tr class="thead-dark">
+        <tr class="text-center thead-dark">
             <th>Number</th>
+            <th> ♥ </th>
             <th style="width:50%">Title</th>
-            <th>Author</th>
+            <th class="text-left">Author</th>
             <th>Created</th>
         </tr>
         </thead>
@@ -17,6 +18,9 @@
         {% for post in post_list %}
         <tr class="text-center">
             <td>{{ post_list.paginator.count|sub:post_list.start_index|sub:forloop.counter0|add:1 }}</td>
+            <td>
+                <span class="badge badge-warning px-2 py-1">{{ post.voter.all.count }}</span>
+            </td>
             <td class="text-left">
                 <a href="{% url 'KHUgle:detail' post.id %}">{{ post.title }}</a>
                 {% if post.comment_set.count > 0 %}
@@ -24,7 +28,7 @@
                 {% endif %}
             </td> 
             <td class="text-left">{{ post.author.username }} </td>
-            <td class="text-left">{{ post.created_at }}</td>
+            <td class="text-center">{{ post.created_at }}</td>
         </tr>
         {% endfor %}
         {% else %}

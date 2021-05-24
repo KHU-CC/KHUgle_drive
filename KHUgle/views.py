@@ -111,3 +111,17 @@ def comment_delete(request, comment_id):
     else:
         comment.delete()
     return redirect('KHUgle:detail', post_id=comment.post.id)
+
+
+@login_required(login_url='account:login')
+def vote_post(request, post_id):
+    post = get_object_or_404(Post, pk=post_id)
+    post.voter.add(request.user)
+    return redirect('KHUgle:detail', post_id=post.id)
+
+
+@login_required(login_url='account:login')
+def vote_comment(request, comment_id):
+    comment = get_object_or_404(Comment, pk=comment_id)
+    comment.voter.add(request.user)
+    return redirect('KHUgle:detail', post_id=comment.post.id)
