@@ -19,7 +19,10 @@
             <td>{{ post_list.paginator.count|sub:post_list.start_index|sub:forloop.counter0|add:1 }}</td>
             <td class="text-left">
                 <a href="{% url 'KHUgle:detail' post.id %}">{{ post.title }}</a>
-            </td>
+                {% if post.comment_set.count > 0 %}
+                <span class="text-danger small ml-2">{{ post.comment_set.count }}</span>
+                {% endif %}
+            </td> 
             <td class="text-left">{{ post.author.username }} </td>
             <td class="text-left">{{ post.created_at }}</td>
         </tr>

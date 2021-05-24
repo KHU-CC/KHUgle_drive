@@ -51,3 +51,12 @@ class Post(models.Model):
     def __str__(self):
         # shell에서 DB확인을 위해 출력 용도로 작성
         return self.title
+
+class Comment(models.Model):
+    """Model representing comment posts"""
+    post = models.ForeignKey(Post, on_delete=models.CASCADE)
+    author = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    content = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    

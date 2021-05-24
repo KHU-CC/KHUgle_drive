@@ -37,8 +37,49 @@
                 data-uri="{% url 'KHUgle:post_delete' post.id  %}">Delete</a>
             </div>
             {% endif %}
-
         </div>
+
+        <div class="card-body">
+            <h5 class="border-bottom my-3 py-2">{{ post.comment_set.count }} Comments</h5>
+            {% for comment in post.comment_set.all %}
+            <div class="card my-3">
+                <div class="card-body">
+                    <div class="card-text" style="white-space: pre-line;">{{ comment.content }}</div>
+                    <div class="d-flex justify-content-end">
+                        <div class="badge badge-light p-2">
+                            <div class="mb-2">{{ comment.author.username }}</div>
+                            <div>{{ comment.created_at }}</div>
+                        </div>
+                    </div>
+                </div>
+                {% if request.user == comment.author %}
+                <div class="my-3">
+                    <a href="#" class="delete btn btn-sm btn-outline-secondary"
+                    data-uri="{% url 'KHUgle:comment_delete' comment.id  %}">Delete</a>
+                </div>
+                {% endif %}
+            </div>
+            {% endfor %}
+
+            <form action="{% url 'KHUgle:comment_create' post.id %}" method="post">
+                {% csrf_token %}
+                {% if form.errors %}
+                <div class="alert alert-danger" role="alert">
+                {% for field in form %}
+                    {% if field.errors %}
+                    <strong>{{ field.label }}</strong>
+                    {{ field.errors }}
+                    {% endif %}
+                {% endfor %}
+                </div>
+                {% endif %}
+                <div class ="form-group">
+                    <textarea name="content" id="content" class="form-control" rows="10"></textarea>
+                </div>
+                <input type="submit" value="Leave a comment" class="btn btn-primary">
+            </form>
+        </div>
+        
     </div>
 </div>
 {% endblock %}

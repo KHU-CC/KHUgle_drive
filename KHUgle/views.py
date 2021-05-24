@@ -1,5 +1,5 @@
-from .models import Post
-from .forms import PostForm
+from .models import Post, Comment
+from .forms import PostForm, CommentForm
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.core.paginator import Paginator
@@ -83,3 +83,31 @@ def post_delete(request, post_id):
         return redirect('KHUgle:detail', post_id=post.id)
     post.delete()
     return redirect('KHUgle:index')
+
+
+@login_required(login_url='account:login')
+def comment_create(request, post_id):
+    post = get_object_or_404(Post, pk=post_id)
+    if (request.method == "POST"):
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            comment = form.save(commit=False)
+            comment.post = post
+            comment.created_at = timezone.now()
+            comment.author = request.user
+            comment.save()
+            redirect('KHUgle:detail', post_id=post_id)
+    else:
+        form = CommentForm()
+    context = {'post':post, 'form':form}
+    return render(request, 'KHUgle/post_detail.html', context)
+
+
+@login_required(login_url='account:login')
+def comment_delete(request, comment_id):
+    comment = get_object_or_404(Comment, pk=comment_id)
+    if (request.user != comment.author):
+        messages.error(request, 'No Permission')
+    else:
+        comment.delete()
+    return redirect('KHUgle:detail', post_id=comment.post.id)
