@@ -13,10 +13,7 @@ def main(request):
     return render(request, 'KHUgle/main.html')
 
 
-<<<<<<< HEAD
-=======
 @login_required(login_url='account:login')
->>>>>>> master
 def index(request):
     """커뮤니티 인덱스 페이지"""
     page = request.GET.get('page', '1')             # 페이지
