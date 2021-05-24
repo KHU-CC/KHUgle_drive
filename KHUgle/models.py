@@ -1,4 +1,5 @@
 from django.db import models
+from account.models import CustomUser
 
 # File model을 이용하여 file의 정보를 담는다. (file, filename, filepath)
 # Notice model을 이용하여 file name을 기준으로 notice를 정리한다.
@@ -41,12 +42,23 @@ from django.db import models
 
 class Post(models.Model):
     """Model representing community posts"""
-    #author = models.ForeignKey(User, on_delete=models.CASCADE) 사용자 모델이 만들어지면!
+    author = models.ForeignKey(CustomUser, on_delete=models.CASCADE) #커스텀 유저 모델과 연결
     title = models.CharField(max_length=144)
     content = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
+    updated_at = models.DateTimeField(null=True, blank=True)
+    voter = models.ManyToManyField(CustomUser, related_name='voter_post')
 
     def __str__(self):
         # shell에서 DB확인을 위해 출력 용도로 작성
         return self.title
+
+class Comment(models.Model):
+    """Model representing comment posts"""
+    post = models.ForeignKey(Post, on_delete=models.CASCADE)
+    author = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    content = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    voter = models.ManyToManyField(CustomUser, related_name='voter_comment')
+
+    

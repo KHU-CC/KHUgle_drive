@@ -1,16 +1,119 @@
 {% extends 'Base/base.html' %}
 {% block content %}
+
+<!-- {% if messages %}
+    <div class="alert alert-danger my-3" role="alert">
+    {% for message in messages %}
+        <strong>{{ message.tags }}</strong>
+        <ul><li>{{ message.message }}</li></ul>
+    {% endfor %}
+    </div>
+{% endif %} -->
+
 <div class="container my-3">
     <h2 class="border-bottom py-2">{{ post.title }}</h2>
-    <div class="card my-3">
-        <div class="card-body">
-            <div class="card-text" style="white-space: pre-line;">{{ post.content }}</div>
-            <div class="d-flex justify-content-end">
-                <div class="badge badge-light p-2">
-                    {{ post.created_at }}
+    <div class="row my-3">
+        <div class="col-1">
+            <div class="bg-light text-center p-3 border font-weight-bolder mb-1">{{ post.voter.count }}</div>
+            <a href="#" data-uri="{% url 'KHUgle:vote_post' post.id %}" class="recommend btn btn-sm btn-secondary btn-block my-1">♥</a>
+        </div>
+        <div class="col-11">
+            <div class="card my-3">
+                <div class="card-body">
+                    <div class="card-text" style="white-space: pre-line;">{{ post.content }}</div>
+                    <div class="d-flex justify-content-end">
+                        <div class="badge badge-light p-2 text-left">
+                            <div class="mb-2">{{ post.author.username }}</div>
+                            <div>{{ post.created_at }}</div>
+                        </div>
+                    </div>
+                    {% if post.updated_at %}
+                    <div class="d-flex justify-content-end">
+                        <div class="badge badge-light p-2 text-left">
+                            <div class="mb-2">Updated</div>
+                            <div>{{ post.updated_at }}</div>
+                        </div>
+                    </div>
+                    {% endif %}
+                    {% if request.user == post.author %}
+                    <div class="my-3">
+                        <a href="{% url 'KHUgle:post_modify' post.id  %}" 
+                        class="btn btn-sm btn-outline-secondary">Modify</a>
+                        <a href="#" class="delete btn btn-sm btn-outline-secondary"
+                        data-uri="{% url 'KHUgle:post_delete' post.id  %}">Delete</a>
+                    </div>
+                    {% endif %}
                 </div>
             </div>
         </div>
     </div>
+
+    
+    <div class="card-body">
+        <h5 class="border-bottom my-3 py-2">{{ post.comment_set.count }} Comments</h5>
+        {% for comment in post.comment_set.all %}
+        <div class="row my-3">
+            <div class="col-1">
+                <div class="bg-light text-center p-3 border font-weight-bolder mb-1">{{ comment.voter.count }}</div>
+                <a href="#" data-uri="{% url 'KHUgle:vote_comment' comment.id %}" class="recommend btn btn-sm btn-secondary btn-block my-1">♥</a>
+            </div>
+            <div class="col-11">
+                <div class="card my-3">
+                    <div class="card-body">
+                        <div class="card-text" style="white-space: pre-line;">{{ comment.content }}</div>
+                        <div class="d-flex justify-content-end">
+                            <div class="badge badge-light p-2">
+                                <div class="mb-2">{{ comment.author.username }}</div>
+                                <div>{{ comment.created_at }}</div>
+                            </div>
+                        </div>
+                    </div>
+                    {% if request.user == comment.author %}
+                    <div class="my-3">
+                        <a href="#" class="delete btn btn-sm btn-outline-secondary"
+                        data-uri="{% url 'KHUgle:comment_delete' comment.id  %}">Delete</a>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>   
+        {% endfor %}
+
+        <form action="{% url 'KHUgle:comment_create' post.id %}" method="post">
+            {% csrf_token %}
+            {% if form.errors %}
+            <div class="alert alert-danger" role="alert">
+            {% for field in form %}
+                {% if field.errors %}
+                <strong>{{ field.label }}</strong>
+                {{ field.errors }}
+                {% endif %}
+            {% endfor %}
+            </div>
+            {% endif %}
+            <div class ="form-group">
+                <textarea name="content" id="content" class="form-control" rows="10"></textarea>
+            </div>
+            <input type="submit" value="Leave a comment" class="btn btn-primary">
+        </form>
+    </div>
 </div>
+{% endblock %}
+
+{% block script %}
+<script type='text/javascript'>
+    $(document).ready(function(){
+        $(".delete").on('click', function() {
+            if(confirm("정말로 삭제하시겠습니까?")) {
+                location.href = $(this).data('uri');
+            }
+        });
+
+        $(".recommend").on('click', function() {
+            if(confirm("추천하시겠습니까?")) {
+                location.href = $(this).data('uri');
+            }
+        });
+    });
+    </script>
 {% endblock %}

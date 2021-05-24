@@ -1,9 +1,11 @@
-from django.shortcuts import render, get_object_or_404, redirect
+from .models import Post, Comment
+from .forms import PostForm, CommentForm
+from django.contrib.auth.decorators import login_required
+from django.contrib import messages
 from django.core.paginator import Paginator
 from django.http import HttpResponse
+from django.shortcuts import render, get_object_or_404, redirect
 from django.utils import timezone
-from .models import Post
-from .forms import PostForm
 
 
 def main(request):
@@ -11,6 +13,10 @@ def main(request):
     return render(request, 'KHUgle/main.html')
 
 
+<<<<<<< HEAD
+=======
+@login_required(login_url='account:login')
+>>>>>>> master
 def index(request):
     """커뮤니티 인덱스 페이지"""
     page = request.GET.get('page', '1')             # 페이지
@@ -25,6 +31,7 @@ def index(request):
     return render(request, 'KHUgle/post_list.html', context)   #해당 html를 불러오며 context 전송
 
 
+@login_required(login_url='account:login')
 def detail(request, post_id):
     """커뮤니티에 포스팅 된 글에 접속한 페이지"""
     post = get_object_or_404(Post, pk=post_id)             # DB에서 가져온다.
@@ -33,12 +40,14 @@ def detail(request, post_id):
     return render(request, 'KHUgle/post_detail.html', context)
 
 
+@login_required(login_url='account:login')
 def post_create(request):
     form = PostForm()
     if request.method == 'POST':
         form = PostForm(request.POST)
         if form.is_valid():
             post = form.save(commit=False)
+            post.author = request.user
             post.created_at = timezone.now()
             post.save()
             return redirect('KHUgle:index')
@@ -46,3 +55,76 @@ def post_create(request):
         form = PostForm()
     context = {'form': form}
     return render(request, 'KHUgle/post_form.html', context)
+
+
+@login_required(login_url='account:login')
+def post_modify(request, post_id):
+    post = get_object_or_404(Post, pk=post_id)
+    if request.user != post.author:
+        messages.error(request, 'Permission Error')
+        return redirect('KHUgle:detail', post_id=post.id)
+
+    if request.method == "POST":
+        form = PostForm(request.POST, instance=post)
+        if form.is_valid():
+            post = form.save(commit=False)
+            post.author = request.user
+            post.updated_at = timezone.now()  # 수정일시 저장
+            post.save()
+            return redirect('KHUgle:detail', post_id=post.id)
+    else:
+        form = PostForm(instance=post)
+    context = {'form': form}
+    return render(request, 'KHUgle/post_form.html', context)
+
+
+@login_required(login_url='account:login')
+def post_delete(request, post_id):
+    post = get_object_or_404(Post, pk=post_id)
+    if request.user != post.author:
+        messages.error(request, 'Permission Error')
+        return redirect('KHUgle:detail', post_id=post.id)
+    post.delete()
+    return redirect('KHUgle:index')
+
+
+@login_required(login_url='account:login')
+def comment_create(request, post_id):
+    post = get_object_or_404(Post, pk=post_id)
+    if (request.method == "POST"):
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            comment = form.save(commit=False)
+            comment.post = post
+            comment.created_at = timezone.now()
+            comment.author = request.user
+            comment.save()
+            redirect('KHUgle:detail', post_id=post_id)
+    else:
+        form = CommentForm()
+    context = {'post':post, 'form':form}
+    return render(request, 'KHUgle/post_detail.html', context)
+
+
+@login_required(login_url='account:login')
+def comment_delete(request, comment_id):
+    comment = get_object_or_404(Comment, pk=comment_id)
+    if (request.user != comment.author):
+        messages.error(request, 'No Permission')
+    else:
+        comment.delete()
+    return redirect('KHUgle:detail', post_id=comment.post.id)
+
+
+@login_required(login_url='account:login')
+def vote_post(request, post_id):
+    post = get_object_or_404(Post, pk=post_id)
+    post.voter.add(request.user)
+    return redirect('KHUgle:detail', post_id=post.id)
+
+
+@login_required(login_url='account:login')
+def vote_comment(request, comment_id):
+    comment = get_object_or_404(Comment, pk=comment_id)
+    comment.voter.add(request.user)
+    return redirect('KHUgle:detail', post_id=comment.post.id)
