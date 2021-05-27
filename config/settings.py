@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/3.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
-
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -140,11 +140,3 @@ STATICFILES_DIRS = [
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-'''TEST CODE
-import boto3
-session = boto3.Session()
-client = session.client('s3')
-client.create_bucket(Bucket='testbucket05220355')
-res = client.upload_file('KHUgle/buckettest.txt','testbucket05220355','testkey1.txt')
-TEST CODE END'''
