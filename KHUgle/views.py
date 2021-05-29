@@ -3,6 +3,7 @@ from .forms import PostForm, CommentForm
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.core.paginator import Paginator
+from django.db.models import Q, Count
 from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from django.utils import timezone
@@ -17,12 +18,28 @@ def main(request):
 def index(request):
     """커뮤니티 인덱스 페이지"""
     page = request.GET.get('page', '1')             # 페이지
-
+    kw = request.GET.get('kw', '')                  # 검색어
+    so = request.GET.get('so', 'recent')            # 정렬
     post_list = Post.objects.order_by('-created_at')  #post_list는 생성 시간 역순 정렬
+
+    if so == 'recommend':
+        post_list = Post.objects.annotate(num_voter=Count('voter')).order_by('-num_voter', '-created_at')
+    elif so == 'popular':
+        post_list = Post.objects.annotate(num_comment=Count('comment')).order_by('-num_comment', '-created_at')
+    else:
+        post_list = Post.objects.order_by('-created_at')
+
+    if kw:
+        post_list = post_list.filter(
+            Q(title__icontains=kw) |
+            Q(content__icontains=kw) |
+            Q(author__username__icontains=kw) |
+            Q(comment__author__username__icontains=kw)
+        ).distinct()
 
     paginator = Paginator(post_list, 10)            # 페이지에 10개씩 묶기
     page_obj = paginator.get_page(page)
-    context = {'post_list': page_obj}               # page_obj를 불러오기
+    context = {'post_list': page_obj, 'page':page, 'kw':kw, 'so':so}               # page_obj를 불러오기
                                                     # 불러오는 방식 --> localhost:8000/KHUgle/?page=1
     
     return render(request, 'KHUgle/post_list.html', context)   #해당 html를 불러오며 context 전송
