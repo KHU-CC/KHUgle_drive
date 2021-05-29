@@ -9,9 +9,10 @@ from botocore.exceptions import ClientError
 # MEDIA_DIR = settings.MEDIA_ROOT
 s3 = boto3.client(
     's3',
-    aws_access_key_id='ASIAVJ7ZLDLC3WBHIK67',
-    aws_secret_access_key='JI/5BZcuABgX5yHFwW9U3ftL+NMURf7KsfOBjRHA',
-    aws_session_token='IQoJb3JpZ2luX2VjEMP//////////wEaCXVzLXdlc3QtMiJHMEUCIQCLWY2kGo9HVPafcaM2D2zyPfDcGNd3KdFXXBU/jMtqsQIgChLbur3gCv6PN122ItCRBTGwqTUQf9TeeetxIoDgS3oqqwIIbBAAGgwzNjUwNTgyNjc4NDUiDN0NQtnfDo+9wP1TciqIAiLkKg23gd4vA07frR4tUFiYF6nh3zCUsUD7AceJezs/qC84z2SB07Qdma357paPuk3+UE4I7vHjTtgvqatCFK1E7acSvlQcQ3j/s2L1TOsj9gj4ck21iDcLTfKVD8T5p3iE/uoQF9PQ1BVl3BDL9vFUdk7prkNdQAKwKEAfpSEIzDpO+kf2rUUdNBE3sQgTzquGDlYEa9CIvIYAJlE/tXcitV29MSdik0TeDlu1VLI+iIqeXkfgUXTKZP5qHax7TPlgRkw7YWeudKxUgBxkmueTXy1k1F5XfpSORrEx2hKGBdeKqbvY8nvAIjvCMoeota0XghOS5aZK1jJZDKapXnYKZblVzNNJvTDG0MaFBjqdAUHOvuqRBeUW/DHzJa60j5LuBfqYfpeoaZi9F7YnVLipyzZ8wFUXO/uIrcXEzeNgOUhBBCsZEg1jcCWR+Bp5qyD7+gLI5D1T0b3dUo5Ynwvet8snIUdjhINA3afvHgVX+yoW+5hID7ks0DMHQnnWklj8t1Xd16wVntGDM2OaWJ65i1hVMXB7T5EeD+HDHcKHKvwCMPpUwczENOBqs0w='
+    aws_access_key_id='ASIAVJ7ZLDLC47Z34S54',
+    aws_secret_access_key='tpZEVOUeQBoKhc0Vta6x4gAoWSeJAwo9dCUmSoxL',
+    aws_session_token='IQoJb3JpZ2luX2VjEMb//////////wEaCXVzLXdlc3QtMiJHMEUCIQDbrcxDupdnH+IYCv8HQ472HeGG5TV+xjNnNBUf8Ynu9AIgBOZzX+zK9fhhFtCpVVgyYyAR6fp1A/elDV393DKU/8oqqwIIbxAAGgwzNjUwNTgyNjc4NDUiDGwzRvFOvEG787HmVCqIArLrrMLBCOaKabLwCObv+VtUqPu1vk9+AlkhaL2NY/BvL2HY2HtbAS+If3BSC1iUofuaA+7p8gCGAcFE0nsdCa2Pm9/D92FFbTOo5cx8CtGm/TIkocOeT87bzDWNU57HCPwdnH1vSADhDgc5f+hkrW3xqN4zbPRFFbLKoDSZjdl2xLaKaU1u80cWZguBM+RUhh4LaaDmtP4jpIyUQaB2IPt71Sufl/q0oRDnUGGxccnF/YyDPruj5pwPy7Gmx+kZ8RXMLUt/RrweUPYDMwgBEqNxsZzRUnfvqZDsuoPxJav5nr4hCdOtv0nJ3RBytDYyA1GnykHyIAWCz1mfxD8yDXbXcAB3OjE1pjCRp8eFBjqdAVIi+PNaHXZu25he0TDVEpM5j5t+NT31bayckC2L7Nr+bFOjWP3x0WkHaBsk1FnFj5zkpLuVHOrU5VbyUY7E7bYgFSBE+kRR5xUrC3kDO1gNhPTrek5V8++4aYwd2s15a7P2cRYGU6BD2OZ9Y7nlZXW6OtWmAuorg9w3FHQ3x7JGclZ2JdArXeReL3BV1zF4vPfsvoJoy5G8gssx4Oo=',
+    region_name = 'us-east-1'
 )
 
 BUCKET = 'khugle-drive-admin'
@@ -68,7 +69,7 @@ def make_directory(dir_name, bucket, current_path):
     response = s3.put_object(Bucket=bucket, Key= current_path+dir_name+'/')
     return response
 
-def create_bucket(bucket, region=None):
+def create_bucket(bucket):
     response = s3.create_bucket(Bucket=bucket)
     return response
 

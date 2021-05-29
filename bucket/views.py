@@ -17,7 +17,7 @@ def private_bucket(request):
     permission_classes = (permissions.IsAuthenticated,)
     if request.method == 'GET':
         user = request.user
-        file_list = s3.list_object('khugle-drive-' + 'admin', '', user)
+        file_list = s3.list_object('khugle-drive-' + user.username, '', user)
         print(file_list)
         
         return render(request, 'bucket/private_bucket.html', {'file_list' : file_list})
@@ -34,7 +34,7 @@ def private_bucket(request):
 
 
 @api_view(['GET', 'PUT', 'DELETE'])
-def private_bucket_file(request, path):
+def private_bucket_file(request, path='/'):
     #file = get_object_or_404(File, path=path)
     if request.method == 'GET':
         user = request.user
