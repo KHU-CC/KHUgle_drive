@@ -1,0 +1,38 @@
+{% extends 'Base/base.html' %}
+{% block content %}
+<div class="container my-3">
+    <table class="table">
+        <thead>
+        <tr class="thead-dark">
+            <th>Title</th>
+            <th>Uploader</th>
+            <th>type</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        {% if file_list %}
+        {% for file in file_list %}
+        <tr class="text-center">
+            {% if file.is_folder %}
+            <td class="text-left"><a href="{% url 'bucket:private_bucket' %}">{{ file.name }}</a></td>
+            <td class="text-right"> </td>
+            <td class="text-right">folder</td>
+            {% else %}
+            <td class="text-left"><a href="{% url 'bucket:private_bucket' %}">{{ file.name }}</a></td>
+            <td class="text-right">{{ file.user }}</td>
+            <td class="text-right">file</td>
+            {% endif %}
+        </tr>
+        {% endfor %}
+        {% else %}
+        <tr>
+            <td colspan="3">EMPTY</td>
+        </tr>
+        {% endif %}
+        </tbody>
+    </table>
+
+    <a href="{% url 'bucket:group_bucket'%}" class="btn btn-primary">Post</a>
+</div>
+{% endblock %}
