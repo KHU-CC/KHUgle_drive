@@ -1,48 +1,56 @@
 {% extends "Base/base_plain.html" %}
 {% block content %}
-<div class="container my-3">
-    <div class="row my-3">
-        <div class="col-4">
-            <h4>SIGN UP</h4>
-        </div>
-        <div class="col-8 text-right">
-            <span>OR <a href="{% url 'account:login' %}">LOGIN</a></span>
-        </div>
-    </div>
-    <form method="post" class="post-form">
+
+<div class="container card bg-light" style="margin-top: 180px; padding: 20px; width: 550px;">
+    <article class="card-body mx-auto" style="width: 400px;">
+        <h3 class="card-title text-center">Create Account</h3>
+        <form method="post" class="post-form">
         {% csrf_token %}
         {% include "account/form_errors.html" %}
-        <div class="form-group">
-            <label for="username">ID</label>
-            <input type="text" class="form-control" name="username" id="username"
-                   value="{{ form.username.value|default_if_none:'' }}">
-        </div>
-        <div class="form-group">
-            <label for="password1">PASSWORD</label>
-            <input type="password" class="form-control" name="password1" id="password1"
-                   value="{{ form.password1.value|default_if_none:'' }}">
-        </div>
-        <div class="form-group">
-            <label for="password2">PASSWORD CONFIRMATION</label>
-            <input type="password" class="form-control" name="password2" id="password2"
+        <div class="form-group input-group">
+            <div class="input-group-prepend">
+                <span class="input-group-text"> <i class="fa fa-user"></i> </span>
+             </div>
+            <input name="username" class="form-control" placeholder="username" type="text" id="username"
+            value="{{ form.username.value|default_if_none:'' }}">
+        </div> <!-- form-group// -->
+        <div class="form-group input-group">
+            <div class="input-group-prepend">
+                <span class="input-group-text"> <i class="fa fa-envelope"></i> </span>
+            </div>
+            <input type="text" class="form-control" name="email" id="email" placeholder="email"
+            value="{{ form.email.value|default_if_none:'' }}">
+        </div> <!-- form-group// -->
+        <div class="form-group input-group">
+            <div class="input-group-prepend">
+                <span class="input-group-text"> <i class="fa fa-lock"></i> </span>
+            </div>
+            <input type="password" class="form-control" name="password1" id="password1" placeholder="PASSWORD"
+            value="{{ form.password1.value|default_if_none:'' }}">
+        </div> <!-- form-group// -->
+        <div class="form-group input-group">
+            <div class="input-group-prepend">
+                <span class="input-group-text"> <i class="fa fa-lock"></i> </span>
+            </div>
+            <input type="password" class="form-control" name="password2" id="password2" placeholder="PASSWORD CONFIRMATION"
                    value="{{ form.password2.value|default_if_none:'' }}">
-        </div>
-        <div class="form-group">
-            <label for="email">EMAIL</label>
-            <input type="text" class="form-control" name="email" id="email"
-                   value="{{ form.email.value|default_if_none:'' }}">
-        </div>
-        <div class="form-group">
-            <label for="major">MAJOR</label>
-            <!-- <input type="text" class="form-control" name="major" id="major"
-                   value="{{ form.major.value|default_if_none:'' }}"> -->
-            <select size="3" class="form-control" name="major" id="major" value="{{ form.major.value }}">
+        </div> <!-- form-group// -->                                      
+        <div class="form-group input-group">
+            <div class="input-group-prepend">
+                <span class="input-group-text"> <i class="fa fa-building"></i> </span>
+            </div>
+            <select class="form-control" name="major" id="major" value="{{ form.major.value }}">
+                <option selected=""> Select Your Major</option>
                 <option value = "CS" selected>Computer Science</option>
                 <option value = "IS">International Studies</option>
                 <option value = "CE">Chemical Engineering</option>
             </select>
-        </div>
-        <button type="submit" class="btn btn-primary">CREATE</button>
+        </div> <!-- form-group end.// -->
+        <div class="form-group">
+            <button type="submit" class="btn btn-primary btn-block"> Create Account  </button>
+        </div> <!-- form-group// -->      
+        <p class="text-center">Have an account? <a href="{% url 'account:login' %}">LOGIN</a></p>
     </form>
-</div>
+    </article>
+</div> <!-- card.// -->
 {% endblock %}
