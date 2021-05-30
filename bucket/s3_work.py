@@ -9,9 +9,9 @@ from botocore.exceptions import ClientError
 # MEDIA_DIR = settings.MEDIA_ROOT
 s3 = boto3.client(
     's3',
-    aws_access_key_id='ASIAVJ7ZLDLC47Z34S54',
-    aws_secret_access_key='tpZEVOUeQBoKhc0Vta6x4gAoWSeJAwo9dCUmSoxL',
-    aws_session_token='IQoJb3JpZ2luX2VjEMb//////////wEaCXVzLXdlc3QtMiJHMEUCIQDbrcxDupdnH+IYCv8HQ472HeGG5TV+xjNnNBUf8Ynu9AIgBOZzX+zK9fhhFtCpVVgyYyAR6fp1A/elDV393DKU/8oqqwIIbxAAGgwzNjUwNTgyNjc4NDUiDGwzRvFOvEG787HmVCqIArLrrMLBCOaKabLwCObv+VtUqPu1vk9+AlkhaL2NY/BvL2HY2HtbAS+If3BSC1iUofuaA+7p8gCGAcFE0nsdCa2Pm9/D92FFbTOo5cx8CtGm/TIkocOeT87bzDWNU57HCPwdnH1vSADhDgc5f+hkrW3xqN4zbPRFFbLKoDSZjdl2xLaKaU1u80cWZguBM+RUhh4LaaDmtP4jpIyUQaB2IPt71Sufl/q0oRDnUGGxccnF/YyDPruj5pwPy7Gmx+kZ8RXMLUt/RrweUPYDMwgBEqNxsZzRUnfvqZDsuoPxJav5nr4hCdOtv0nJ3RBytDYyA1GnykHyIAWCz1mfxD8yDXbXcAB3OjE1pjCRp8eFBjqdAVIi+PNaHXZu25he0TDVEpM5j5t+NT31bayckC2L7Nr+bFOjWP3x0WkHaBsk1FnFj5zkpLuVHOrU5VbyUY7E7bYgFSBE+kRR5xUrC3kDO1gNhPTrek5V8++4aYwd2s15a7P2cRYGU6BD2OZ9Y7nlZXW6OtWmAuorg9w3FHQ3x7JGclZ2JdArXeReL3BV1zF4vPfsvoJoy5G8gssx4Oo=',
+    aws_access_key_id='ASIARPQAACLCUAWJSMLX',
+    aws_secret_access_key='S3Vo4VAHLguTJS/Ma2YoeXO6Iigevhe/eCYS8uhv',
+    aws_session_token='IQoJb3JpZ2luX2VjEOL//////////wEaCXVzLXdlc3QtMiJHMEUCIQCSAFpbcTrmrr5iMaHKf0qSU0RXc+0PCLxJZgOOJIcmAQIgfZF8+VJkPutN+Lq9DIagQZmXd+3X8IN6Sqx29EK4zHUqtAIIi///////////ARAAGgwxMDIwMDU0NzgwODUiDINJ3PIKfZQjYzxKBiqIAnfw3BvLQ3Cd92xghyKEvxBy3EHqAaxuiq64XNB/aH9H3eXf/9FBExZ5D9K7uwxgX/9g7FxBy5cnbspu0LlM86fgWSuMxNov6vJG+PCkLJMnQvZ4ujOJolX+uAlwPM2JooVZyML0npz9zMFGAKgSeZdccwjGKv62WFsHa+ZL/uelsIO3qp2Se2JOy6rL1HmTsPebHqUJr7wX6Y23E+TsR8Ky0hUWMpMGugXZ0z/fBUP0aN1XhKDgbePADcpKphb6ZeuOuGu0BH8PCyDP6scU8fyZMq5Ap9PFoFA7HQpquicSN/RTAgQcHKU2cwz2fconQJCjm9PsHxtOmPULCmvMT7nvJddm6PLN+jCYyc2FBjqdAY4Af7I5uEGHCks2kFK5/phIC5jL0q2wYXzOV+2DVy8QUO5vugWrkb6kuaENQpeYrOm+JE6jMzdi4mZVptnjijEY4UvOlbk8FtfLHUrVJj7sFV6zIJde+TEX0ysjNxPzHMBd4hlTV4PhADzqxn2DvDeEFJuD81qIhh1wkM3kVKWuT2+dNeRRL10oZlrwCOBdPcC9JamRBknxMwlwSn4=',
     region_name = 'us-east-1'
 )
 
@@ -26,8 +26,37 @@ def upload_file(file_name, bucket, file_path=None):
     return response
 
 def list_object(bucket, folder_path, user):
-    response = s3.list_objects(Bucket=bucket, Prefix='', Delimiter='/')
+    print("folder_path: ", folder_path)
 
+    response = s3.list_objects(Bucket=bucket)
+    # print("response: ", response)
+    file_list = []
+    folder_list = {}
+    folder_res = response.get('CommonPrefixes')
+    file_res = response.get('Contents')
+    if folder_res:
+        for folder in folder_res:
+            file_list.append({'name': folder.get('Prefix').split('/')[-2], 'path': folder.get('Prefix'), 'is_folder': True, 'user' : user})
+    if file_res:
+        for file in file_res:
+            file_list.append({'name': file.get('Key').split('/')[-1], 'path': file.get('Key'), 'is_folder': False, 'user':user})
+    # print("file_list: ", file_list)
+
+    for file in file_list:
+        if file['path'].find('/') != -1:
+            path = file['path'][0:file['path'].rfind('/')]
+            folder = file['path'].split('/')[-2]
+            folder_list[folder] = path
+
+    # for folder in folder_list:
+    #     print("folder: ", folder, ": ", folder_list[folder])
+
+    # print("folder_path", folder_path)
+    if folder_path in folder_list:
+        # print("this: ", folder_list[folder_path])
+        folder_path = folder_list[folder_path]+'/'
+
+    response = s3.list_objects(Bucket=bucket, Prefix=f'{folder_path}', Delimiter='/')
     file_list = []
     folder_res = response.get('CommonPrefixes')
     file_res = response.get('Contents')
@@ -37,7 +66,6 @@ def list_object(bucket, folder_path, user):
     if file_res:
         for file in file_res:
             file_list.append({'name': file.get('Key').split('/')[-1], 'path': file.get('Key'), 'is_folder': False, 'user':user})
-    # file_list = folder_list + file_list
 
     return file_list
 
