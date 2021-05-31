@@ -58,7 +58,7 @@ def group_bucket(request):
     if request.method == 'GET':
         user = request.user
         print(request.user)
-        file_list = s3.list_object('khugle-drive-' + user.major.lower(), '')
+        file_list = s3.list_object('khugle-drive-' + user.major.lower(), '','user')
         print(file_list)
         
         return render(request, 'bucket/group_bucket.html', {'file_list' : file_list})

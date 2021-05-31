@@ -7,13 +7,7 @@ from botocore.exceptions import ClientError
 
 # BASE_DIR = settings.BASE_DIR
 # MEDIA_DIR = settings.MEDIA_ROOT
-s3 = boto3.client(
-    's3',
-    aws_access_key_id='ASIAVJ7ZLDLC47Z34S54',
-    aws_secret_access_key='tpZEVOUeQBoKhc0Vta6x4gAoWSeJAwo9dCUmSoxL',
-    aws_session_token='IQoJb3JpZ2luX2VjEMb//////////wEaCXVzLXdlc3QtMiJHMEUCIQDbrcxDupdnH+IYCv8HQ472HeGG5TV+xjNnNBUf8Ynu9AIgBOZzX+zK9fhhFtCpVVgyYyAR6fp1A/elDV393DKU/8oqqwIIbxAAGgwzNjUwNTgyNjc4NDUiDGwzRvFOvEG787HmVCqIArLrrMLBCOaKabLwCObv+VtUqPu1vk9+AlkhaL2NY/BvL2HY2HtbAS+If3BSC1iUofuaA+7p8gCGAcFE0nsdCa2Pm9/D92FFbTOo5cx8CtGm/TIkocOeT87bzDWNU57HCPwdnH1vSADhDgc5f+hkrW3xqN4zbPRFFbLKoDSZjdl2xLaKaU1u80cWZguBM+RUhh4LaaDmtP4jpIyUQaB2IPt71Sufl/q0oRDnUGGxccnF/YyDPruj5pwPy7Gmx+kZ8RXMLUt/RrweUPYDMwgBEqNxsZzRUnfvqZDsuoPxJav5nr4hCdOtv0nJ3RBytDYyA1GnykHyIAWCz1mfxD8yDXbXcAB3OjE1pjCRp8eFBjqdAVIi+PNaHXZu25he0TDVEpM5j5t+NT31bayckC2L7Nr+bFOjWP3x0WkHaBsk1FnFj5zkpLuVHOrU5VbyUY7E7bYgFSBE+kRR5xUrC3kDO1gNhPTrek5V8++4aYwd2s15a7P2cRYGU6BD2OZ9Y7nlZXW6OtWmAuorg9w3FHQ3x7JGclZ2JdArXeReL3BV1zF4vPfsvoJoy5G8gssx4Oo=',
-    region_name = 'us-east-1'
-)
+s3 = boto3.client('s3')
 
 BUCKET = 'khugle-drive-admin'
 
