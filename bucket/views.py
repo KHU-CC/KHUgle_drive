@@ -19,7 +19,6 @@ def private_bucket(request):
         user = request.user
         file_list = s3.list_object('khugle-drive-' + user.username, '', user)
         print(file_list)
-        
         return render(request, 'bucket/private_bucket.html', {'file_list' : file_list})
     
     else :
@@ -39,7 +38,7 @@ def private_bucket_file(request, path='/'):
     if request.method == 'GET':
         user = request.user
         print('path : ' + request.path)
-        file_list = s3.list_object('khugle-drive-' + 'admin', path, user)
+        file_list = s3.list_object('khugle-drive-' + user.username, path, user)
         return render(request, 'bucket/private_bucket_file.html', {'file_list' : file_list})
     
     elif request.method == 'DELETE' :
