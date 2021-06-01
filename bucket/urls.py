@@ -20,6 +20,6 @@ app_name = 'bucket'
 
 urlpatterns = [
     path('private', views.private_bucket, name='private_bucket'),
-    path('private/<str:path>', views.private_bucket_file, name='private_bucket_file'),
+    path('private/<path:folder_path>', views.private_bucket_file, name='private_bucket_file'),
     path('group', views.group_bucket, name='group_bucket'),
 ]

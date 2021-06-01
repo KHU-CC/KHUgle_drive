@@ -48,7 +48,8 @@ class Post(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(null=True, blank=True)
     voter = models.ManyToManyField(CustomUser, related_name='voter_post')
-
+    file = models.FileField(null=True)
+    
     def __str__(self):
         # shell에서 DB확인을 위해 출력 용도로 작성
         return self.title

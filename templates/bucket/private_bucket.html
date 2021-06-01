@@ -15,11 +15,11 @@
         {% for file in file_list %}
         <tr class="text-center">
             {% if file.is_folder %}
-            <td class="text-left"><a href="{% url 'bucket:private_bucket' %}">{{ file.name }}</a></td>
+            <td class="text-left"><a href="{% url 'bucket:private_bucket_file' file.path %}">{{ file.name }}</a></td>
             <td class="text-right"> </td>
             <td class="text-right">folder</td>
             {% else %}
-            <td class="text-left"><a href="{% url 'bucket:private_bucket' %}">{{ file.name }}</a></td>
+            <td class="text-left"><a href="{% url 'bucket:private_bucket_file' file.path %}">{{ file.name }}</a></td>
             <td class="text-right">{{ file.user }}</td>
             <td class="text-right">file</td>
             {% endif %}
