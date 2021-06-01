@@ -1,47 +1,68 @@
 {% extends 'Base/base.html' %}
 {% load bucket_filter %}
+{% load static %}
 {% block content %}
 <div class="container my-3">
     <table class="table">
         <thead>
         <tr class="thead-dark">
-            <th>Bucket</th>
-            <th>Uploader</th>
-            <th>type</th>
+            <th>Folder</th>
         </tr>
         </thead>
-
-        <tbody>
-        <tr class="text-center">
-            <td class="text-left">
-            {% if current_path|is_bucket %}
-            <a href="{% url 'bucket:private_bucket' %}">...</a>
-            {% else %}
-            <a href="{% url 'bucket:private_bucket_file' current_path|upper_path %}">...</a>
-            {% endif %}
-            </td>
-        </tr>
-        {% if file_list %}
-        {% for file in file_list %}
-        <tr class="text-center">
-            {% if file.is_folder %}
-            <td class="text-left"><a href="{% url 'bucket:private_bucket_file' file.path %}">{{ file.name }}</a></td>
-            <td class="text-right"> </td>
-            <td class="text-right">folder</td>
-            {% else %}
-            <td class="text-left"><a href="{% url 'bucket:private_bucket_file' file.path %}">{{ file.name }}</a></td>
-            <td class="text-right">{{ file.user }}</td>
-            <td class="text-right">file</td>
-            {% endif %}
-        </tr>
-        {% endfor %}
-        {% else %}
-        <tr>
-            <td colspan="3">EMPTY</td>
-        </tr>
-        {% endif %}
-        </tbody>
     </table>
+
+    <tbody>
+    <div class = "grid-5">
+
+    {% if current_path|is_bucket %}
+    <div class ="items"><a href="{% url 'bucket:private_bucket' %}"><img src="{% static './img/folder.png' %}"></a>...</div>
+    {% else %}
+    <div class ="items"><a href="{% url 'bucket:private_bucket_file' current_path|upper_path %}"><img src="{% static './img/folder.png' %}"></a>...</div>
+    {% endif %}
+
+    {% if file_list %}
+    {% for file in file_list %}
+    <!-- <tr class="text-center"> -->
+        {% if file.is_folder %}
+        <div class ="items"><a href="{% url 'bucket:private_bucket_file' file.path %}"><img src="{% static './img/folder.png' %}"></a>{{ file.name }}</div>
+        {% endif %}
+    <!-- </tr> -->
+    {% endfor %}
+    {% else %}
+    <tr>
+        <td colspan="3">EMPTY</td>
+    </tr>
+    {% endif %}
+    </div>
+    </tbody>
+
+    <tbody>
+    <table class="table">
+        <thead>
+        <tr class="thead-dark">
+            <th>File</th>
+        </tr>
+        </thead>
+    </table>
+
+    <div class = "grid-5">
+    {% if file_list %}
+    {% for file in file_list %}
+    <!-- <tr class="text-center"> -->
+        {% if not file.is_folder %}
+        <div class ="items"><a href="{% url 'bucket:private_bucket_file' file.path %}"><img src="{% static './img/file.jpg' %}"></a>{{ file.name }}</div>
+        {% endif %}
+    <!-- </tr> -->
+    {% endfor %}
+    {% else %}
+    <tr>
+        <td colspan="3">EMPTY</td>
+    </tr>
+    {% endif %}
+    </div>
+
+    </tbody>
+    
 
     <a href="{% url 'KHUgle:post_create' %}" class="btn btn-primary">Post</a>
 </div>

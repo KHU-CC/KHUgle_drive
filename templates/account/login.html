@@ -1,30 +1,35 @@
 {% extends "Base/base_plain.html" %}
 {% block content %}
-<div class="container my-3">
-    <div class="row">
-        <div class="col-4">
-            <h4>LOGIN</h4>
-        </div>
-        <div class="col-8 text-right">
-            <span>OR <a href="{% url 'account:signup' %}">SIGN UP</a></span>
-        </div>
+<body>
+<div class="container" style="height:100%">
+    <div class="item text-center" style="margin-top:180px; margin-bottom:20px;">
+        <p style="font-size:100px; font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;font-weight:bold;">KHUgle Drive</p>
     </div>
-
-    <form method="post" class="post-form" action="{% url 'account:login' %}">
-        {% csrf_token %}
-        <input type="hidden" name="next" value="{{ next }}">
-        {% include "account/form_errors.html" %}
-        <div class="form-group">
-            <label for="username">ID</label>
-            <input type="text" class="form-control" name="username" id="username"
-                   value="{{ form.username.value|default_if_none:'' }}">
+    <div class="item" style="margin:auto; width:550px">
+        <div class="row">
+            <div class="col-4 text">
+                <h4>LOGIN</h4>
+            </div>
+            <div class="col-8 text-right">
+                <a href="{% url 'account:signup' %}">SIGN UP</a>
+            </div>
         </div>
-        <div class="form-group">
-            <label for="password">PASSWORD</label>
-            <input type="password" class="form-control" name="password" id="password"
-                   value="{{ form.password.value|default_if_none:'' }}">
-        </div>
-        <button type="submit" class="btn btn-primary">LOGIN</button>
-    </form>
+    
+        <form method="post" class="post-form" action="{% url 'account:login' %}">
+            {% csrf_token %}
+            <input type="hidden" name="next" value="{{ next }}">
+            {% include "account/form_errors.html" %}
+            <div class="form-group">
+                <input type="text" class="form-control" name="username" id="username" placeholder="username"
+                        value="{{ form.username.value|default_if_none:'' }}">
+            </div>
+            <div class="form-group">
+                <input type="password" class="form-control" name="password" id="password" placeholder="password"
+                        value="{{ form.password.value|default_if_none:'' }}">
+            </div>
+            <button type="submit" class="btn btn-primary">LOGIN</button>
+        </form>
+    </div>
 </div>
+
 {% endblock %}
