@@ -20,37 +20,8 @@ def upload_file(file_name, bucket, file_path=None):
     return response
 
 def list_object(bucket, folder_path, user):
-    print("folder_path: ", folder_path)
-
-    response = s3.list_objects(Bucket=bucket)
-    # print("response: ", response)
-    file_list = []
-    folder_list = {}
-    folder_res = response.get('CommonPrefixes')
-    file_res = response.get('Contents')
-    if folder_res:
-        for folder in folder_res:
-            file_list.append({'name': folder.get('Prefix').split('/')[-2], 'path': folder.get('Prefix'), 'is_folder': True, 'user' : user})
-    if file_res:
-        for file in file_res:
-            file_list.append({'name': file.get('Key').split('/')[-1], 'path': file.get('Key'), 'is_folder': False, 'user':user})
-    # print("file_list: ", file_list)
-
-    for file in file_list:
-        if file['path'].find('/') != -1:
-            path = file['path'][0:file['path'].rfind('/')]
-            folder = file['path'].split('/')[-2]
-            folder_list[folder] = path
-
-    # for folder in folder_list:
-    #     print("folder: ", folder, ": ", folder_list[folder])
-
-    # print("folder_path", folder_path)
-    if folder_path in folder_list:
-        # print("this: ", folder_list[folder_path])
-        folder_path = folder_list[folder_path]+'/'
-
-    response = s3.list_objects(Bucket=bucket, Prefix=f'{folder_path}', Delimiter='/')
+    response = s3.list_objects(Bucket=bucket, Prefix=folder_path, Delimiter='/')
+    print(response)
     file_list = []
     folder_res = response.get('CommonPrefixes')
     file_res = response.get('Contents')
@@ -60,7 +31,8 @@ def list_object(bucket, folder_path, user):
     if file_res:
         for file in file_res:
             file_list.append({'name': file.get('Key').split('/')[-1], 'path': file.get('Key'), 'is_folder': False, 'user':user})
-
+    # file_list = folder_list + file_list
+    print(file_list)
     return file_list
 
 
@@ -94,10 +66,6 @@ def make_directory(dir_name, bucket, current_path):
 def create_bucket(bucket):
     response = s3.create_bucket(Bucket=bucket)
     return response
-
-def list_bucket():
-    res = s3.list_buckets()
-    return [bucket['Name'] for bucket in res['Buckets']]
 
 def update_path(path, folder):
     return path + '/' + 'folder'

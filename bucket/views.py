@@ -9,9 +9,8 @@ from .serializer import FileSerializer
 from django.conf import settings
 import bucket.s3_work as s3
 import os
+
 # Create your views here.
-
-
 @api_view(['GET','POST'])
 def private_bucket(request):
     permission_classes = (permissions.IsAuthenticated,)
@@ -20,7 +19,7 @@ def private_bucket(request):
         file_list = s3.list_object('khugle-drive-' + user.username, '', user)
         print(file_list)
         return render(request, 'bucket/private_bucket.html', {'file_list' : file_list})
-    
+
     else :
         serializer = FileSerializer(data=request.data)
         if serializer.is_valid():
@@ -31,15 +30,20 @@ def private_bucket(request):
             s3.upload_file(os.path.join(settings.MEDIA_ROOT, file_name), 'khugle-drive-'+user.username, file_path + file_name)
             return JsonResponse(serializer.data, status=201)
 
-
 @api_view(['GET', 'PUT', 'DELETE'])
-def private_bucket_file(request, path='/'):
+def private_bucket_file(request, folder_path):
     #file = get_object_or_404(File, path=path)
     if request.method == 'GET':
         user = request.user
-        print('path : ' + request.path)
-        file_list = s3.list_object('khugle-drive-' + user.username, path, user)
-        return render(request, 'bucket/private_bucket_file.html', {'file_list' : file_list})
+        print(folder_path)
+        
+        folders = folder_path.split('/')
+        folder_path = ''
+        for i in range(len(folders)-1):
+            folder_path += folders[i] + '/'
+        print('path : ' + folder_path)
+        file_list = s3.list_object('khugle-drive-' + user.username, folder_path, user)
+        return render(request, 'bucket/private_bucket_file.html', {'file_list' : file_list, 'current_path' : folder_path})
     
     elif request.method == 'DELETE' :
         serializer = FileSerializer(data=request.data)
@@ -57,7 +61,7 @@ def group_bucket(request):
     if request.method == 'GET':
         user = request.user
         print(request.user)
-        file_list = s3.list_object('khugle-drive-' + user.major.lower(), '','user')
+        file_list = s3.list_object('khugle-drive-' + user.major.lower(), '', user)
         print(file_list)
         
         return render(request, 'bucket/group_bucket.html', {'file_list' : file_list})
@@ -69,6 +73,31 @@ def group_bucket(request):
             file_name = file_path.split('/')[-1]
             user = request.user
             s3.upload_file(os.path.join(settings.MEDIA_ROOT, file_name), 'khugle-drive-'+user.magjo.lower(), file_path + file_name)
+            return JsonResponse(serializer.data, status=201)
+
+@api_view(['GET', 'PUT', 'DELETE'])
+def group_bucket_file(request, folder_path):
+    #file = get_object_or_404(File, path=path)
+    if request.method == 'GET':
+        user = request.user
+        print(folder_path)
+        
+        folders = folder_path.split('/')
+        folder_path = ''
+        for i in range(len(folders)-1):
+            folder_path += folders[i] + '/'
+        print('path : ' + folder_path)
+        file_list = s3.list_object('khugle-drive-' + user.username, folder_path, user)
+        return render(request, 'bucket/private_bucket_file.html', {'file_list' : file_list, 'current_path' : folder_path})
+    
+    elif request.method == 'DELETE' :
+        serializer = FileSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            file_path = serializer.data.get('file')
+            file_name = file_path.split('/')[-1]
+            user = request.user
+            s3.upload_file(os.path.join(settings.MEDIA_ROOT, file_name), 'khugle-drive-'+user.username, file_path + file_name)
             return JsonResponse(serializer.data, status=201)
 
 # class FileView(viewsets.ModelViewSet):

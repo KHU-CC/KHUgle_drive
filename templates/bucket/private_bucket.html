@@ -16,7 +16,7 @@
     {% for file in file_list %}
     <!-- <tr class="text-center"> -->
         {% if file.is_folder %}
-        <div class ="items"><a href="./private/{{ file.name }}"><img src="{% static './img/folder.png' %}"></a>{{ file.name }}</div>
+        <div class ="items"><a href="{% url 'bucket:private_bucket_file' file.path %}"><img src="{% static './img/folder.png' %}"></a>{{ file.name }}</div>
         {% endif %}
     <!-- </tr> -->
     {% endfor %}
@@ -32,7 +32,7 @@
     <table class="table">
         <thead>
         <tr class="thead-dark">
-            <th>Folder</th>
+            <th>File</th>
         </tr>
         </thead>
     </table>
@@ -42,7 +42,7 @@
     {% for file in file_list %}
     <!-- <tr class="text-center"> -->
         {% if not file.is_folder %}
-        <div class ="items"><a href="blank"><img src="{% static './img/file.jpg' %}"></a>{{ file.name }}</div>
+        <div class ="items"><a href="{% url 'bucket:private_bucket_file' file.path %}"><img src="{% static './img/file.jpg' %}"></a>{{ file.name }}</div>
         {% endif %}
     <!-- </tr> -->
     {% endfor %}
@@ -56,6 +56,6 @@
     </tbody>
     
 
-    <a style="margin-top: 10px" href="{% url 'bucket:private_bucket' %}" class="btn btn-primary">Post</a>
+    <a href="{% url 'KHUgle:post_create' %}" class="btn btn-primary">Post</a>
 </div>
 {% endblock %}
