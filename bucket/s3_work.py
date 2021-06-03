@@ -9,9 +9,9 @@ from botocore.exceptions import ClientError
 # MEDIA_DIR = settings.MEDIA_ROOT
 s3 = boto3.client(
     's3',
-    aws_access_key_id='ASIARPQAACLCVB3VOU6J',
-    aws_secret_access_key='b6nByzy3XPKjlmRWNtozrM6I8EYfG1K0QX5LzsH/',
-    aws_session_token='IQoJb3JpZ2luX2VjEBgaCXVzLXdlc3QtMiJHMEUCIAlY0KbRobA5jX9wmdzTILUIIvt8HltxjwWomQkwqQidAiEAva3RTBVReo8cbN2stAEtD/c5I+fNoKUQfjvQRccw78wqtAIIwP//////////ARAAGgwxMDIwMDU0NzgwODUiDMR/i0Yxut8YCED7LiqIAjT5ziWPoIUk17QQKiYdxGdgob0y3rBJaQMsYFh0CouehwRCUizAygkbiEjM/AF6Fx+fzq44I93ZVTQ9ocancouDYqO1cLnTTTM8vFaddSAHqeD7Tudh7VqkTiic6SWH/wlQFwDHoYwJTfd1XzsWrD8W+Gb6+hJ0FFXPlzUvSF3WOWNHiZJ4+tFiaEVlJWoykNDEgBWfdYj9+QNVe+Y9Q9NcETmcsiNoR++bEfkrD6XSIMSsqldizfn3DmJfb9D0WzPaEgTj7wBdd+K3fAVYXCNa3WM76cTO6/p8mTGfmuxSw9US2/WfNhKBgfElOncuHvtPFsqcJ61naJ3+nrflqriDZ9XyPAvElTCqn9mFBjqdAaYKTsN26VkQHXhe21unfbmc5KxOiEU7043NiudD4AKbHl51eb2h3w8criS4YV6FTmsp1egyGxg6QZW/5fqRppMiU6cDsZr+YsTTKqjVkGKzasaXzT9g2uA1N+g7u9guRbcRCyWe0/K0ssolNYu7Ed8V/xjlx8sc0x07we4yinyMJCeG8mrAMBTN5koHgn4h9lR5YYSdAJengboG1EY=',
+    aws_access_key_id='ASIAVJ7ZLDLC3C3NEHP7',
+    aws_secret_access_key='owH6sTSzRLsW4RRs3aMyP5EMnTqg0kkT0wywyLIy',
+    aws_session_token='IQoJb3JpZ2luX2VjEEoaCXVzLXdlc3QtMiJHMEUCIQDaRePagdSUqMfcAazqyT2AEVDslT1KKSjQuF+m/p/5DAIgOfOCEEc1S8wDLnkAtlz3tgQHj3iYP4Im/chbihPjxXgqtAII8///////////ARAAGgwzNjUwNTgyNjc4NDUiDJttg8PqQOzj9ODauiqIAsacO6L+LFAjb4Grl6UuiwIHcu1StXkx3uwmbNx8shn4mDMNgU7fCPH9RQe3+VRDPjDGL5bbvLcC+gL0CTbneA40Jz3bKCKHkQA25hr+XW9rdpJaNUeGMY4ZOJKFAo0YsC4Yg3jMFSz1CWbIJ7/mPNEzkKyBtYfIsCBxjClsOZqkVvBJVfpE+iOn+cLx7Qrdva43MVIo9wzRXv6Ua437n+1SwK7oqeISBcgeMg/pqL+aLj0KwmFcI6wgErIAfDJPFhNXJ0bOFrc6M3LCwdsR5ccWrOaGZzSyoh296Zt3P4H+A+q8nhgWBRXZfh+KczBQLp6kjQb/F/M9+IlwpssqEvX5hEGJEqYh6TCbp+SFBjqdAdGPRKgzu2P21crBvque0HaWo3dqXtUipBkwhNWEzLq8fUAwF6HQOOjj1wq8AdG5LQv6ICFBaJ+YYIFrJ4bg8XrfmEH4298xzswR7gQ7SB/pm/MUdjcxnhp516CARHDKjDviEhqY2iD/PDE6pmAOh6+JdrtcgPYuVeZnI07pS7Rhn1j7ddnzcGBojuMWcCBlwjGt43YvsaIDH5YNYaU=',
     region_name = 'us-east-1'
 )
 
@@ -38,7 +38,6 @@ def list_object(bucket, folder_path, user):
         for file in file_res:
             file_list.append({'name': file.get('Key').split('/')[-1], 'path': file.get('Key'), 'is_folder': False, 'user':user})
     # file_list = folder_list + file_list
-    print(file_list)
     return file_list
 
 
