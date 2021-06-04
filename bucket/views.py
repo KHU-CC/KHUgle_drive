@@ -35,13 +35,10 @@ def private_bucket_file(request, folder_path):
     #file = get_object_or_404(File, path=path)
     if request.method == 'GET':
         user = request.user
-        print(folder_path)
-        
         folders = folder_path.split('/')
         folder_path = ''
         for i in range(len(folders)-1):
             folder_path += folders[i] + '/'
-        print('path : ' + folder_path)
         file_list = s3.list_object('khugle-drive-' + user.username, folder_path, user)
         return render(request, 'bucket/private_bucket_file.html', {'file_list' : file_list, 'current_path' : folder_path})
     
@@ -100,6 +97,7 @@ def group_bucket_file(request, folder_path):
             s3.upload_file(os.path.join(settings.MEDIA_ROOT, file_name), 'khugle-drive-'+user.username, file_path + file_name)
             return JsonResponse(serializer.data, status=201)
 
+#@api_view(['GET'])
 # class FileView(viewsets.ModelViewSet):
 #     queryset = File.objects.all()
 #     serializer_class = FileSerializer

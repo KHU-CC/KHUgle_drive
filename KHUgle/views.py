@@ -7,7 +7,7 @@ from django.db.models import Q, Count
 from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from django.utils import timezone
-
+import bucket.s3_work as s3
 
 def main(request):
     """사이트 첫 페이지"""
@@ -55,17 +55,24 @@ def detail(request, post_id):
 
 
 @login_required(login_url='account:login')
-def post_create(request):
+def post_create(request, folder_path):
     form = PostForm()
+    
     if request.method == 'POST':
-        form = PostForm(request.POST)
+        form = PostForm(request.POST, request.FILES)
+        print(form)
+        print(form.is_valid)
         if form.is_valid():
             post = form.save(commit=False)
             post.author = request.user
             post.created_at = timezone.now()
             post.major = request.user.major
             post.save()
-            return redirect('KHUgle:index')
+            print(str(request.FILES.get('file')))
+            for file in form.files:
+                 s3.upload_file(str(request.FILES.get('file')), 'khugle-drive-'+request.user.username, folder_path + str(request.FILES.get('file')))
+            
+            return redirect('bucket:private_bucket_file', folder_path=folder_path)
     else:
         form = PostForm()
     context = {'form': form}

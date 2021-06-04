@@ -15,3 +15,11 @@ def upper_path(value):
     for i in range(len(folders)-2):
         path += folders[i] + '/'
     return path
+
+@register.filter
+def get_path(value):
+    folders = value.split('/')
+    path = ''
+    for i in range(len(folders)-1):
+        path += folders[i] + '/'
+    return path

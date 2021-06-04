@@ -17,6 +17,7 @@ $(document).ready(function(){
     //Show contextmenu:
     $('.items').contextmenu(function(e){
       var item = $(this).text()
+      console.log(this)
       console.log(item)
       var context = $('.contextmenu li a')
       // console.log(context)
