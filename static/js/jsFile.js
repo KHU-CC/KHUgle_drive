@@ -17,13 +17,14 @@ $(document).ready(function(){
     //Show contextmenu:
     $('.items').contextmenu(function(e){
       var item = $(this).text()
-      console.log(this)
-      console.log(item)
+      allPath = $(location).attr('pathname')
+      host = $(location).attr('host')
       var context = $('.contextmenu li a')
-      // console.log(context)
-      context[0].href = "./delete/"+item
-      context[1].href = "./move/"+item
-      context[2].href = "./log/"+item
+      console.log(allPath)
+      console.log(host + "/delete" + allPath + item )
+      context[0].href = "http://" + host + "/delete" + allPath + item
+      context[1].href = "http://" + host + "./move" + allPath + item
+      context[2].href = "http://" + host + "./log" + allPath + item
       //Get window size:
       var winWidth = $(document).width();
       var winHeight = $(document).height();

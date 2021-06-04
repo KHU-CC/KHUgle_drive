@@ -14,89 +14,102 @@ import os
 @api_view(['GET','POST'])
 def private_bucket(request):
     permission_classes = (permissions.IsAuthenticated,)
+    user = request.user
+    bucket_private = 'khugle-drive-' + user.username
+
     if request.method == 'GET':
-        user = request.user
         file_list = s3.list_object('khugle-drive-' + user.username, '', user)
-        print(file_list)
-        
         return render(request, 'bucket/private_bucket.html', {'file_list' : file_list})
 
     else :
-        serializer = FileSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            file_path = serializer.data.get('file')
-            file_name = file_path.split('/')[-1]
-            user = request.user
-            s3.upload_file(os.path.join(settings.MEDIA_ROOT, file_name), 'khugle-drive-'+user.username, file_path + file_name)
-            return JsonResponse(serializer.data, status=201)
+        print('DELETE')
+
 
 @api_view(['GET', 'PUT', 'DELETE'])
 def private_bucket_file(request, folder_path):
-    #file = get_object_or_404(File, path=path)
+    permission_classes = (permissions.IsAuthenticated,)
+    user = request.user
+    bucket_private = 'khugle-drive-' + user.username
+
     if request.method == 'GET':
-        user = request.user
         folders = folder_path.split('/')
         folder_path = ''
         for i in range(len(folders)-1):
             folder_path += folders[i] + '/'
-        file_list = s3.list_object('khugle-drive-' + user.username, folder_path, user)
+        file_list = s3.list_object(bucket_private, folder_path, user)
         return render(request, 'bucket/private_bucket_file.html', {'file_list' : file_list, 'current_path' : folder_path})
     
     elif request.method == 'DELETE' :
-        serializer = FileSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            file_path = serializer.data.get('file')
-            file_name = file_path.split('/')[-1]
-            user = request.user
-            s3.upload_file(os.path.join(settings.MEDIA_ROOT, file_name), 'khugle-drive-'+user.username, file_path + file_name)
-            return JsonResponse(serializer.data, status=201)
+        print('DELETE')
+
+def private_file_delete(request, file_path):
+    user = request.user
+    bucket_private = 'khugle-drive-' + user.username
+    s3.delete_file(file_path, bucket_private)
+
+def private_bucket_create(request):
+    user = request.user
+    bucket_private = 'khugle-drive-' + user.name
+    s3.make_directory(request.directory_name, bucket_private, '')
+
+def private_folder_create(request, folder_path):
+    user = request.user
+    bucket_private = 'khugle-drive-' + user.name
+    s3.make_directory(request.directory_name, bucket_private, folder_path)
 
 @api_view(['GET','POST'])
 def group_bucket(request):
     permission_classes = (permissions.IsAuthenticated,)
+    user = request.user
+    bucket_major = 'khugle-drive-qwer'
+    #bucket_major = 'khugle-drive-' + user.major.lower()
+
     if request.method == 'GET':
-        user = request.user
-        print(request.user)
-        file_list = s3.list_object('khugle-drive-' + user.major.lower(), '', user)
-        print(file_list)
-        
+        file_list = s3.list_object(bucket_major, '', user)
         return render(request, 'bucket/group_bucket.html', {'file_list' : file_list})
+
     else :
-        serializer = FileSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            file_path = serializer.data.get('file')
-            file_name = file_path.split('/')[-1]
-            user = request.user
-            s3.upload_file(os.path.join(settings.MEDIA_ROOT, file_name), 'khugle-drive-'+user.magjo.lower(), file_path + file_name)
-            return JsonResponse(serializer.data, status=201)
+        print('POST')
 
 @api_view(['GET', 'PUT', 'DELETE'])
 def group_bucket_file(request, folder_path):
-    #file = get_object_or_404(File, path=path)
-    if request.method == 'GET':
-        user = request.user
-        print(folder_path)
-        
+    permission_classes = (permissions.IsAuthenticated,)
+    user = request.user
+    print(str(request))
+    bucket_major = 'khugle-drive-qwer'
+    #bucket_major = 'khugle-drive-' + user.major.lower()
+
+    if request.method == 'GET':       
         folders = folder_path.split('/')
         folder_path = ''
         for i in range(len(folders)-1):
             folder_path += folders[i] + '/'
-        print('path : ' + folder_path)
-        file_list = s3.list_object('khugle-drive-' + user.username, folder_path, user)
-        return render(request, 'bucket/private_bucket_file.html', {'file_list' : file_list, 'current_path' : folder_path})
+        file_list = s3.list_object(bucket_major, folder_path, user)
+        return render(request, 'bucket/group_bucket_file.html', {'file_list' : file_list, 'current_path' : folder_path})
     
     elif request.method == 'DELETE' :
-        serializer = FileSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            file_path = serializer.data.get('file')
-            file_name = file_path.split('/')[-1]
-            user = request.user
-            s3.upload_file(os.path.join(settings.MEDIA_ROOT, file_name), 'khugle-drive-'+user.username, file_path + file_name)
-            return JsonResponse(serializer.data, status=201)
+        print('DELETE')
+
+    else:
+        print('PUT')
+
+def group_file_delete(request, file_path):
+    user = request.user
+    bucket_major = 'khugle-drive-qwer'
+    #bucket_major = 'khugle-drive-' + user.major.lower()
+    s3.delete_file(file_path, bucket_major)
+
+def group_bucket_create(request):
+    user = request.user
+    bucket_major = 'khugle-drive-qwer'
+    #bucket_major = 'khugle-drive-' + user.major.lower()
+    s3.make_directory(request.directory_name, bucket_major, '')
+
+def group_folder_create(request, folder_path):
+    user = request.user
+    bucket_major = 'khugle-drive-qwer'
+    #bucket_major = 'khugle-drive-' + user.major.lower()
+    s3.make_directory(request.directory_name, bucket_major, folder_path)
 
 #@api_view(['GET'])
 # class FileView(viewsets.ModelViewSet):
