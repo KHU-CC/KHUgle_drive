@@ -9,7 +9,22 @@ class PostForm(forms.ModelForm):
         widgets = {
             'title': forms.TextInput(attrs={'class':'form-control'}),
             'content': forms.Textarea(attrs={'class':'form-control', 'rows':10}),
-            'file' : forms.ClearableFileInput(attrs={'multiple': False})
+            'file' : forms.ClearableFileInput(attrs={'multiple': False, 'null':True})
+        }
+
+        def __init__(self, *args, **kwargs):
+            super(PostForm, self).__init__(*args, **kwargs)
+            self.fields['file'].required = False
+
+class DeletePostForm(forms.ModelForm):
+
+    class Meta:
+        model = Post
+        fields = ['title', 'content']
+
+        widgets = {
+            'title': forms.TextInput(attrs={'class':'form-control'}),
+            'content': forms.Textarea(attrs={'class':'form-control', 'rows':10}),
         }
 
 class CommentForm(forms.ModelForm):
