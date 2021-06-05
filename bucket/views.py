@@ -70,15 +70,13 @@ def group_bucket_file(request, folder_path):
     user = request.user
     print(request)
     bucket_major = 'khugle-drive-qwer'
-    #bucket_major = 'khugle-drive-' + user.major.lower()
-
-    if request.method == 'GET':       
-        folders = folder_path.split('/')
-        folder_path = ''
-        for i in range(len(folders)-1):
-            folder_path += folders[i] + '/'
-        file_list = s3.list_object(bucket_major, folder_path, user)
-        return render(request, 'bucket/group_bucket_file.html', {'file_list' : file_list, 'current_path' : folder_path})
+    #bucket_major = 'khugle-drive-' + user.major.lower()      
+    folders = folder_path.split('/')
+    folder_path = ''
+    for i in range(len(folders)-1):
+        folder_path += folders[i] + '/'
+    file_list = s3.list_object(bucket_major, folder_path, user)
+    return render(request, 'bucket/group_bucket_file.html', {'file_list' : file_list, 'current_path' : folder_path})
 
 def group_file_delete(request, file_path):
     user = request.user
@@ -87,13 +85,12 @@ def group_file_delete(request, file_path):
     print("file_path : "+ file_path)
     print(s3.delete_file(file_path, bucket_major))
     folders = file_path.split('/')
-    if len(folders) == 2:
+    if len(folders) == 1:
         return redirect('/bucket/group/file')
     new_path = '/'
-    for i in range(len(folders) - 2):
+    for i in range(len(folders) - 1):
         new_path += folders[i]
         new_path += '/'
-
     return redirect('/bucket/group/file' + new_path)
     
 
@@ -103,9 +100,9 @@ def group_bucket_create(request):
     #bucket_major = 'khugle-drive-' + user.major.lower()
     print(request.method)
     if request.method == 'GET':
-        #s3.make_directory(request.bucket, bucket_major, '')
+        s3.make_directory(request.bucket, bucket_major, '')
         file_list = s3.list_object(bucket_major, '', user)
-    return render(request, 'bucket/group_bucket.html')
+    return redirect('/bucket/group/file')
 
 def group_folder_create(request, folder_path):
     user = request.user
