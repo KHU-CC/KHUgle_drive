@@ -23,11 +23,11 @@ def index(request):
     post_list = Post.objects.order_by('-created_at')  #post_list는 생성 시간 역순 정렬
 
     if so == 'recommend':
-        post_list = Post.objects.annotate(num_voter=Count('voter')).order_by('-num_voter', '-created_at')
+        post_list = Post.objects.filter(major=request.user.major).annotate(num_voter=Count('voter')).order_by('-num_voter', '-created_at')
     elif so == 'popular':
-        post_list = Post.objects.annotate(num_comment=Count('comment')).order_by('-num_comment', '-created_at')
+        post_list = Post.objects.filter(major=request.user.major).annotate(num_comment=Count('comment')).order_by('-num_comment', '-created_at')
     else:
-        post_list = Post.objects.order_by('-created_at')
+        post_list = Post.objects.filter(major=request.user.major).order_by('-created_at')
 
     if kw:
         post_list = post_list.filter(
@@ -66,6 +66,7 @@ def post_create(request, folder_path):
             post = form.save(commit=False)
             post.author = request.user
             post.created_at = timezone.now()
+            post.major = request.user.major
             post.save()
             print(str(request.FILES.get('file')))
             for file in form.files:

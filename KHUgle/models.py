@@ -49,6 +49,7 @@ class Post(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(null=True, blank=True)
     voter = models.ManyToManyField(CustomUser, related_name='voter_post')
+    major = models.CharField(max_length=144)# choices=MAJORS
 
     def __str__(self):
         # shell에서 DB확인을 위해 출력 용도로 작성

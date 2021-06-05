@@ -9,9 +9,9 @@ from botocore.exceptions import ClientError
 # MEDIA_DIR = settings.MEDIA_ROOT
 s3 = boto3.client(
     's3',
-    aws_access_key_id='ASIAVJ7ZLDLC57AZDDF5',
-    aws_secret_access_key='hmlbc8di7Muu1A0o/1Egpr3fktcUMwRFCi9jNZZF',
-    aws_session_token='FwoGZXIvYXdzEHwaDJrvvSr6td8s47o9ByLCAXECfysMqXHsHPuW8mbyoiv8RX9Jgph2B38kNxP4pUbWKwZUrwUfyW6soMX4TvdLxCyn4jCYNtcpREbUpcarJbA9M1XYHEQvleWPQKuu20SVK7X8qLsxkdE4cuIrUnf4c7WdtlJTxh+RvKpZBAVdexb+76j4ckNM6IS6Bt0rcjCbuXoU3tb9vANBSjVsqDypxruunSs2LIPewCCAnpgfaKqmeJGD/8xvRw+B5tKFYZ/K8DUW/BB6++PeO/cclPF7uLe6KNDH64UGMi12kpd2L0nJkhvsnp/dFVym6Qv554lWwXI3PfAOW4Tf77oIqkz7zuLqkFVEUHE=',
+    aws_access_key_id='ASIARPQAACLCQWCIP75F',
+    aws_secret_access_key='JkQ3//xIrg/wqEanpAstrdD4msh4LlJ6BGYopRPW',
+    aws_session_token='FwoGZXIvYXdzEIH//////////wEaDBGi5+5kN2aQr61LHyLCAQN18bvlEDvulNKxqnnyM74rFm0CSMV3FmgRg3Gean0XoSawq2gAp6CJDfXIux+cALItOyo+kCr0JrS6kdwoUOdWecaqglyPvHmxrWBdmM+PTzgdo7EEwaXp/hHHtMSAfP/hNVft8/YAprcOKb9V7VIWyCwvZ07wgKlz2VBT+k6ZQz4qtf9Uk6JOOhebEbhyX2SivJNw09u57EAyFSrnHOStwPzJ4/du9T3LLAbW2MnYemPjrxGYrVDE41NsYXSTQG0vKOLa7IUGMi1L62+WzBaIXyOmPyZuUvBpPzALpCP23RYsjW3y4DG8XvFr+kEiGRgmJxjfGoo=',
     region_name = 'us-east-1'
 )
 

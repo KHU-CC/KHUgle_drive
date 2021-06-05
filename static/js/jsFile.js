@@ -37,9 +37,9 @@ $(document).ready(function(){
       // console.log("temp: ", temp)
       // console.log("http://" + host + needPath1 +"/delete" + needPath2 + item)
       // console.log(host + "/delete" + allPath + item )
-      context[0].href = "http://" + host + '/' + needPath1 +"/delete/" + needPath2 +'/' + item
-      context[1].href = "http://" + host + '/' + needPath1 +"/move/" + needPath2 +'/' + item
-      context[2].href = "http://" + host + '/' + needPath1 +"/log/" + needPath2 +'/' + item
+      context[0].href = "http://" + host + '/' + needPath1 +"/delete/" + needPath2 + item
+      context[1].href = "http://" + host + '/' + needPath1 +"/move/" + needPath2 + item
+      context[2].href = "http://" + host + '/' + needPath1 +"/log/" + needPath2 + item
       //Get window size:
       var winWidth = $(document).width();
       var winHeight = $(document).height();
