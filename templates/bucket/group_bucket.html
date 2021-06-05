@@ -57,6 +57,10 @@
     </tbody>
     
 
-    <class="btn btn-primary">Post</a>
+    <form action="{% url 'bucket:group_bucket_create'%}" method="PUT"> {% csrf_token %}
+        <input type="text" id="bucket" name="bucket">
+        <input type="submit">
+    </form>
+
 </div>
 {% endblock %}

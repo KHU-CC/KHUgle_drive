@@ -9,9 +9,9 @@ from botocore.exceptions import ClientError
 # MEDIA_DIR = settings.MEDIA_ROOT
 s3 = boto3.client(
     's3',
-    aws_access_key_id='ASIAVJ7ZLDLC2VYTTAMK',
-    aws_secret_access_key='a3sxo0sQoTsEbvw00esjaypDKy6er1di/0z4YlXK',
-    aws_session_token='FwoGZXIvYXdzEGkaDNuHf8NXX+NkSkEoqSLCAWfPyDMLjea3q9AYLpSGQ4NEhbFktqiAazCxLAaw1C/ygEomK+uJp5L67FbaBqaAGROdU14qTCa/ULE/fHkpgNKGoOG8mFsN75kwnMj3X9GALyE4VMS/P4yfGZh3mXObNJwutfZG/mkgK3zZo34Oh5mqi1kulqJgzDh0dI3Pu4s4LN1X1sTU39YGFDd3nGIZLStwMgwORAbMBTBwnpoqvwMT6MBQ7fozLpAj5UGFtQzOwATTkgSqkLTTvhfGIxa2+uq6KKyp54UGMi0F5my6buy28+ycJ4OcopZ/pZJ3Ai9WOaZLkQC5NYgNm2ud3EqWHi6DdwMRcsI=',
+    aws_access_key_id='ASIAVJ7ZLDLC57AZDDF5',
+    aws_secret_access_key='hmlbc8di7Muu1A0o/1Egpr3fktcUMwRFCi9jNZZF',
+    aws_session_token='FwoGZXIvYXdzEHwaDJrvvSr6td8s47o9ByLCAXECfysMqXHsHPuW8mbyoiv8RX9Jgph2B38kNxP4pUbWKwZUrwUfyW6soMX4TvdLxCyn4jCYNtcpREbUpcarJbA9M1XYHEQvleWPQKuu20SVK7X8qLsxkdE4cuIrUnf4c7WdtlJTxh+RvKpZBAVdexb+76j4ckNM6IS6Bt0rcjCbuXoU3tb9vANBSjVsqDypxruunSs2LIPewCCAnpgfaKqmeJGD/8xvRw+B5tKFYZ/K8DUW/BB6++PeO/cclPF7uLe6KNDH64UGMi12kpd2L0nJkhvsnp/dFVym6Qv554lWwXI3PfAOW4Tf77oIqkz7zuLqkFVEUHE=',
     region_name = 'us-east-1'
 )
 
@@ -27,7 +27,6 @@ def upload_file(file_name, bucket, file_path=None):
 
 def list_object(bucket, folder_path, user):
     response = s3.list_objects(Bucket=bucket, Prefix=folder_path, Delimiter='/')
-    print(response)
     file_list = []
     folder_res = response.get('CommonPrefixes')
     file_res = response.get('Contents')
