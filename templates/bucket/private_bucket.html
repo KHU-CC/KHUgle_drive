@@ -55,7 +55,11 @@
     </div>
 
     </tbody>
-    
+
+    <form action="{% url 'bucket:private_bucket_create'%}" method="POST"> {% csrf_token %}
+        <input type="text" id="bucket" name="bucket">
+        <input type="submit">
+    </form>
 
     <class="btn btn-primary">Post</a>
 </div>

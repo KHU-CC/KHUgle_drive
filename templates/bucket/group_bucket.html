@@ -57,7 +57,7 @@
     </tbody>
     
 
-    <form action="{% url 'bucket:group_bucket_create'%}" method="PUT"> {% csrf_token %}
+    <form action="{% url 'bucket:group_bucket_create'%}" method="POST"> {% csrf_token %}
         <input type="text" id="bucket" name="bucket">
         <input type="submit">
     </form>

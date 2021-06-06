@@ -63,7 +63,12 @@
 
     </tbody>
     
-
     <a href="{% url 'KHUgle:post_create' current_path %}" class="btn btn-primary">Post</a>
+    
+    <form action="{% url 'bucket:group_folder_create' current_path %}" method="POST"> {% csrf_token %}
+        <input type="text" id="folder" name="folder">
+        <input type="submit">
+    </form>
+
 </div>
 {% endblock %}

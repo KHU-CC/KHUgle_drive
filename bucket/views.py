@@ -57,13 +57,18 @@ def private_file_delete(request, file_path):
 
 def private_bucket_create(request):
     user = request.user
-    bucket_private = 'khugle-drive-' + user.name
-    s3.make_directory(request.directory_name, bucket_private, '')
+    bucket_private = 'khugle-drive-' + user.username
+    if request.method == 'POST':
+        s3.make_directory(request.POST['bucket'], bucket_private, '')
+    return redirect('/bucket/private/file')
 
 def private_folder_create(request, folder_path):
     user = request.user
-    bucket_private = 'khugle-drive-' + user.name
-    s3.make_directory(request.directory_name, bucket_private, folder_path)
+    bucket_private = 'khugle-drive-' + user.username
+    if request.method == 'POST':
+        print(folder_path + request.POST['folder'])
+        s3.make_directory(folder_path + request.POST['folder'], bucket_private, '')
+    return redirect('/bucket/private/file/' + folder_path)
 
 
 @api_view(['GET','POST'])
@@ -121,14 +126,14 @@ def group_bucket_create(request):
     user = request.user
     bucket_major = 'khugle-drive-qwer'
     #bucket_major = 'khugle-drive-' + user.major.lower()
-    print(request.method)
-    if request.method == 'GET':
-        s3.make_directory(request.bucket, bucket_major, '')
-        file_list = s3.list_object(bucket_major, '', user)
+    if request.method == 'POST':
+        s3.make_directory(request.POST['bucket'], bucket_major, '')
     return redirect('/bucket/group/file')
 
 def group_folder_create(request, folder_path):
     user = request.user
     bucket_major = 'khugle-drive-qwer'
     #bucket_major = 'khugle-drive-' + user.major.lower()
-    s3.make_directory(request.directory_name, bucket_major, folder_path)
+    if request.method == 'POST':
+        s3.make_directory(folder_path + request.POST['folder'], bucket_major, '')
+    return redirect('/bucket/group/file/' + folder_path)
