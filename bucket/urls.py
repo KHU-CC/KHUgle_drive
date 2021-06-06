@@ -15,6 +15,7 @@ urlpatterns = [
     path('group/file/<path:folder_path>', views.group_bucket_file, name='group_bucket_file'),
     path('group/download/<path:file_path>', views.group_download, name='group_download'),
     path('group/delete/<path:file_path>', views.group_file_delete, name='group_file_delete'),
+    path('group/log/<path:file_path>', views.group_file_log, name='group_file_log'),
     path('group/create', views.group_bucket_create, name='group_bucket_create'),
     path('group/create/<path:folder_path>', views.group_folder_create, name='group_folder_create'),
 ]
