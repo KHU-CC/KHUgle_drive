@@ -5,6 +5,7 @@ from rest_framework import viewsets, permissions, renderers
 from rest_framework.views import APIView
 from rest_framework.decorators import api_view
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.csrf import csrf_exempt
 from .models import File
 from django.http import JsonResponse
 from .serializer import FileSerializer
@@ -70,6 +71,7 @@ def private_file_delete(request, file_path):
         new_path += '/'
     return redirect('/bucket/private/file' + new_path)
 
+@csrf_exempt
 @login_required(login_url='account:login')
 def private_bucket_create(request):
     user = request.user
@@ -78,6 +80,7 @@ def private_bucket_create(request):
         s3.make_directory(request.POST['bucket'], bucket_private, '')
     return redirect('/bucket/private/file')
 
+@csrf_exempt
 @login_required(login_url='account:login')
 def private_folder_create(request, folder_path):
     user = request.user
@@ -152,6 +155,7 @@ def group_file_delete(request, file_path):
     context = {'form': form}
     return render(request, 'KHUgle/post_form.html', context)
 
+@csrf_exempt
 @login_required(login_url='account:login')
 def group_bucket_create(request):
     user = request.user
@@ -161,6 +165,7 @@ def group_bucket_create(request):
         s3.make_directory(request.POST['bucket'], bucket_major, '')
     return redirect('/bucket/group/file')
 
+@csrf_exempt
 @login_required(login_url='account:login')
 def group_folder_create(request, folder_path):
     user = request.user

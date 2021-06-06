@@ -1,6 +1,17 @@
 {% extends 'Base/base.html' %}
 {% load static %}
 {% block content %}
+<script>
+    function CreateFolder(){
+    var item = $('#cf')
+    console.log(item.html())
+    item.html("<form action=\"{% url 'bucket:private_bucket_create'%}\" method='POST' style='float:right; margin-left: 5px'>\
+        <input type='text' id='bucket' name='bucket'>\
+        <input class ='btn btn-primary' type='submit'>\
+    </form>")
+  }          
+</script>
+
 <div class="container my-3">
     <table class="table">
         <thead>
@@ -56,11 +67,15 @@
 
     </tbody>
 
-    <form action="{% url 'bucket:private_bucket_create'%}" method="POST"> {% csrf_token %}
-        <input type="text" id="bucket" name="bucket">
-        <input type="submit">
-    </form>
+    <div id = "cf" style="display:inline">
+        <button class="btn btn-primary" style="float:right; margin-left: 5px;" onclick="CreateFolder()">Create Folder</button>
+    </div>
 
-    <class="btn btn-primary">Post</a>
+    <div class="abutton" style="float:right; display:inline">
+        <a href="" class="btn btn-primary">Post</a>
+    </div>
+
+    
 </div>
 {% endblock %}
+
