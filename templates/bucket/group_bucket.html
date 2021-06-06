@@ -43,7 +43,8 @@
     {% for file in file_list %}
     <!-- <tr class="text-center"> -->
         {% if not file.is_folder %}
-        <div class ="items"><a href="{% url 'bucket:group_bucket_file' file.path %}"><img src="{% static './img/file.jpg' %}"></a>{{ file.name }}</div>
+        <div class ="items"><a href="{% url 'bucket:group_download' file.path %}"><img src="{% static './img/file.jpg' %}"></a>{{ file.name }}</div>
+        {% else %}
         {% endif %}
     <!-- </tr> -->
     {% endfor %}
@@ -55,7 +56,6 @@
     </div>
 
     </tbody>
-    
 
     <form action="{% url 'bucket:group_bucket_create'%}" method="POST"> {% csrf_token %}
         <input type="text" id="bucket" name="bucket">

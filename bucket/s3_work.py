@@ -9,9 +9,9 @@ from botocore.exceptions import ClientError
 # MEDIA_DIR = settings.MEDIA_ROOT
 s3 = boto3.client(
     's3',
-    aws_access_key_id='ASIAVJ7ZLDLC5XC4OO54',
-    aws_secret_access_key='gAhoW+5p3E8vLpM8G8MKu1XrCb4PRXInzMHhRaI5',
-    aws_session_token='FwoGZXIvYXdzEJT//////////wEaDEuYbSZuOUCCLav4CiLCAQFgws6B5hO1DbcQT5mmnT+z91SdT5rwnTuTRP04LKs9va91oakNHpQ9dvGtWsHQHY8/zrr8YCDN8CSULSviO9zKIOBPQmgTvuwUW+JGqU+HkGojtWJ/zG849lw5tpOe3VZ3a8PT+S5VgtRFCb3xjTfRz6VM6A1UDsTgEy1CCqjqvWUtSLsROXm7xtPrytiGwm57OwSJ+zJ63H8Nue+Zg5en2BmaePWm82Q2kF5W641s1dqsevF/+zkYSWw0egKu/Qp+KLfq8IUGMi1DtDqFa3ftej76dTIYBmQYlysaZsv0XsnUyLlwcuv30Q+jgQ5Szzq6q7bHZEc=',
+    aws_access_key_id='ASIAVJ7ZLDLCXBOC2ION',
+    aws_secret_access_key='Eq6fXYyX/iXbnDJekiqkc87u98oA5eEZLVSuUGeP',
+    aws_session_token='FwoGZXIvYXdzEJj//////////wEaDHoCaQ02S6LEoLJ+8iLCAZtfpp4zTuSkYwnDuIeHEEZ5GKtOgmc9VP0V9Z+K5UwLRWuaazSfPXDUYhFB/7ZbjMl2ok7upqcbteG5peoVJNDMfQRmzVrWkZM+tVrlhzcgom/RNHsHa5zpsazEPKR+40NCj2l4l7JZQfPPfnTmYRf08e8/PkqSMWcUflZxuarhqV+IoI/ULAvmLP8PqOoMOoXc5EzDvs1DhClhtpd7HvakeD+wDVRXe0ykBPNPR9aYWpjR7PS143II2xkPCxh//vgTKObL8YUGMi0Ug+2axUv3cabLmx/Plsq4omSZS4oGu65GHOZdQgMj5Qt/W8pDrqXr9Ow2vFI=',
     region_name = 'us-east-1'
 )
 
@@ -21,8 +21,8 @@ def upload_file(file_name, bucket, file_path=None):
     # If S3 object_name was not specified, use file_name
     if file_path is None:
         file_path= file_name
-    # Upload the fil
-    response = s3.upload_file(file_name, bucket, file_path)
+    # Upload the file
+    response = s3.upload_file('static/files/' +file_name, bucket, file_path)
     return response
 
 def list_object(bucket, folder_path, user):
@@ -38,7 +38,6 @@ def list_object(bucket, folder_path, user):
             if file.get('Key').split('/')[-1] == '':
                 continue
             file_list.append({'name': file.get('Key').split('/')[-1], 'path': file.get('Key'), 'is_folder': False, 'user':user})
-    # file_list = folder_list + file_list
     print('file_list ' + bucket + ' path : ' + folder_path + ' ' + str(file_list))
     return file_list
 
@@ -74,6 +73,3 @@ def make_directory(dir_name, bucket, current_path):
 def create_bucket(bucket):
     response = s3.create_bucket(Bucket=bucket)
     return response
-
-def update_path(path, folder):
-    return path + '/' + 'folder'

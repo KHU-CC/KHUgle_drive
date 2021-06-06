@@ -45,7 +45,7 @@ class Post(models.Model):
     author = models.ForeignKey(CustomUser, on_delete=models.CASCADE) #커스텀 유저 모델과 연결
     title = models.CharField(max_length=144)
     content = models.TextField()
-    file = models.FileField(null=True)
+    file = models.FileField(null=True, upload_to='static/files')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(null=True, blank=True)
     voter = models.ManyToManyField(CustomUser, related_name='voter_post')

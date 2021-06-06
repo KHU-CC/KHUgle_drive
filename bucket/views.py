@@ -15,7 +15,7 @@ import bucket.s3_work as s3
 import os
 
 # Create your views here.
-@api_view(['GET','POST'])
+@login_required(login_url='account:login')
 def private_bucket(request):
     permission_classes = (permissions.IsAuthenticated,)
     user = request.user
@@ -25,8 +25,7 @@ def private_bucket(request):
         file_list = s3.list_object('khugle-drive-' + user.username, '', user)
         return render(request, 'bucket/private_bucket.html', {'file_list' : file_list})
 
-
-@api_view(['GET', 'PUT', 'DELETE'])
+@login_required(login_url='account:login')
 def private_bucket_file(request, folder_path):
     permission_classes = (permissions.IsAuthenticated,)
     user = request.user
@@ -40,6 +39,22 @@ def private_bucket_file(request, folder_path):
         file_list = s3.list_object(bucket_private, folder_path, user)
         return render(request, 'bucket/private_bucket_file.html', {'file_list' : file_list, 'current_path' : folder_path})
 
+@login_required(login_url='account:login')
+def private_download(request, file_path):
+    user = request.user
+    bucket_private = 'khugle-drive-' + user.username
+    print("file_path : "+ file_path)
+    s3.download_file(bucket_private, file_path, 'static/files')
+    folders = file_path.split('/')
+    if len(folders) == 1:
+        return redirect('/bucket/private/file')
+    new_path = '/'
+    for i in range(len(folders) - 1):
+        new_path += folders[i]
+        new_path += '/'
+    return redirect('/bucket/private/file' + new_path)
+
+@login_required(login_url='account:login')
 def private_file_delete(request, file_path):
     user = request.user
     bucket_private = 'khugle-drive-' + user.username
@@ -55,6 +70,7 @@ def private_file_delete(request, file_path):
         new_path += '/'
     return redirect('/bucket/private/file' + new_path)
 
+@login_required(login_url='account:login')
 def private_bucket_create(request):
     user = request.user
     bucket_private = 'khugle-drive-' + user.username
@@ -62,6 +78,7 @@ def private_bucket_create(request):
         s3.make_directory(request.POST['bucket'], bucket_private, '')
     return redirect('/bucket/private/file')
 
+@login_required(login_url='account:login')
 def private_folder_create(request, folder_path):
     user = request.user
     bucket_private = 'khugle-drive-' + user.username
@@ -70,8 +87,7 @@ def private_folder_create(request, folder_path):
         s3.make_directory(folder_path + request.POST['folder'], bucket_private, '')
     return redirect('/bucket/private/file/' + folder_path)
 
-
-@api_view(['GET','POST'])
+@login_required(login_url='account:login')
 def group_bucket(request):
     permission_classes = (permissions.IsAuthenticated,)
     user = request.user
@@ -82,11 +98,10 @@ def group_bucket(request):
         file_list = s3.list_object(bucket_major, '', user)
         return render(request, 'bucket/group_bucket.html', {'file_list' : file_list})
 
-@api_view(['GET', 'PUT', 'DELETE'])
+@login_required(login_url='account:login')
 def group_bucket_file(request, folder_path):
     permission_classes = (permissions.IsAuthenticated,)
     user = request.user
-    print(request)
     bucket_major = 'khugle-drive-qwer'
     #bucket_major = 'khugle-drive-' + user.major.lower()      
     folders = folder_path.split('/')
@@ -96,6 +111,22 @@ def group_bucket_file(request, folder_path):
     file_list = s3.list_object(bucket_major, folder_path, user)
     return render(request, 'bucket/group_bucket_file.html', {'file_list' : file_list, 'current_path' : folder_path})
 
+@login_required(login_url='account:login')
+def group_download(request, file_path):
+    user = request.user
+    bucket_major = 'khugle-drive-qwer'
+    print("file_path : "+ file_path)
+    s3.download_file(bucket_major, file_path, 'static/files')
+    folders = file_path.split('/')
+    if len(folders) == 1:
+        return redirect('/bucket/major/file')
+    new_path = '/'
+    for i in range(len(folders) - 1):
+        new_path += folders[i]
+        new_path += '/'
+    return redirect('/bucket/major/file' + new_path)
+
+@login_required(login_url='account:login')
 def group_file_delete(request, file_path):
 
     form = DeletePostForm()
@@ -121,7 +152,7 @@ def group_file_delete(request, file_path):
     context = {'form': form}
     return render(request, 'KHUgle/post_form.html', context)
 
-
+@login_required(login_url='account:login')
 def group_bucket_create(request):
     user = request.user
     bucket_major = 'khugle-drive-qwer'
@@ -130,6 +161,7 @@ def group_bucket_create(request):
         s3.make_directory(request.POST['bucket'], bucket_major, '')
     return redirect('/bucket/group/file')
 
+@login_required(login_url='account:login')
 def group_folder_create(request, folder_path):
     user = request.user
     bucket_major = 'khugle-drive-qwer'
