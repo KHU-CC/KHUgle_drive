@@ -16,14 +16,30 @@ but I would appreciate an attribution from my work. I hope you enjoy it.
 $(document).ready(function(){
     //Show contextmenu:
     $('.items').contextmenu(function(e){
+      // var item = $(this).text()
       var item = $(this).text()
-      console.log(this)
-      console.log(item)
+      allPath = $(location).attr('pathname')
+      host = $(location).attr('host')
+      
       var context = $('.contextmenu li a')
-      // console.log(context)
-      context[0].href = "./delete/"+item
-      context[1].href = "./move/"+item
-      context[2].href = "./log/"+item
+      // console.log(allPath.split("/"))
+
+      // console.log(allPath)
+      allPathArry = allPath.split("/")
+      needPath1 = allPathArry.splice(1, 2).join('/')
+      needPath2 = allPathArry.splice(2, allPathArry.length-2).join('/')
+
+      // console.log(needPath2)
+      
+      // console.log(allPathArry.length)
+      // console.log("needPath: ",needPath1 + " and " + needPath2)
+      
+      // console.log("temp: ", temp)
+      // console.log("http://" + host + needPath1 +"/delete" + needPath2 + item)
+      // console.log(host + "/delete" + allPath + item )
+      context[0].href = "http://" + host + '/' + needPath1 +"/delete/" + needPath2 + item
+      context[1].href = "http://" + host + '/' + needPath1 +"/move/" + needPath2 + item
+      context[2].href = "http://" + host + '/' + needPath1 +"/log/" + needPath2 + item
       //Get window size:
       var winWidth = $(document).width();
       var winHeight = $(document).height();

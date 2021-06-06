@@ -15,16 +15,16 @@
     <div class = "grid-5">
 
     {% if current_path|is_bucket %}
-    <div class ="items"><a href="{% url 'bucket:private_bucket' %}"><img src="{% static './img/folder.png' %}"></a>...</div>
+    <div class ="items"><a href="{% url 'bucket:group_bucket' %}"><img src="{% static './img/folder.png' %}"></a>...</div>
     {% else %}
-    <div class ="items"><a href="{% url 'bucket:private_bucket_file' current_path|upper_path %}"><img src="{% static './img/folder.png' %}"></a>...</div>
+    <div class ="items"><a href="{% url 'bucket:group_bucket_file' current_path|upper_path %}"><img src="{% static './img/folder.png' %}"></a>...</div>
     {% endif %}
 
     {% if file_list %}
     {% for file in file_list %}
     <!-- <tr class="text-center"> -->
         {% if file.is_folder %}
-        <div class ="items"><a href="{% url 'bucket:private_download' file.path %}"><img src="{% static './img/folder.png' %}"></a>{{ file.name }}</div>
+        <div class ="items"><a href="{% url 'bucket:group_bucket_file' file.path %}"><img src="{% static './img/folder.png' %}"></a>{{ file.name }}</div>
         {% endif %}
     <!-- </tr> -->
     {% endfor %}
@@ -50,7 +50,7 @@
     {% for file in file_list %}
     <!-- <tr class="text-center"> -->
         {% if not file.is_folder %}
-        <div class ="items"><a href="{% url 'bucket:group_download' file.path %}"><img src="{% static './img/file.jpg' %}"></a>{{ file.name }}</div>
+        <div class ="items"><a href="{% url 'bucket:group_bucket_file' file.path %}"><img src="{% static './img/file.jpg' %}"></a>{{ file.name }}</div>
         {% endif %}
     <!-- </tr> -->
     {% endfor %}
@@ -63,10 +63,9 @@
 
     </tbody>
     
-
     <a href="{% url 'KHUgle:post_create' current_path %}" class="btn btn-primary">Post</a>
-
-    <form action="{% url 'bucket:private_folder_create' current_path %}" method="POST"> {% csrf_token %}
+    
+    <form action="{% url 'bucket:group_folder_create' current_path %}" method="POST"> {% csrf_token %}
         <input type="text" id="folder" name="folder">
         <input type="submit">
     </form>
