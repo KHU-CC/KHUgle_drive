@@ -11,6 +11,7 @@ urlpatterns = [
     path('private/create', views.private_bucket_create, name='private_bucket_create'),
     path('private/create/<path:folder_path>', views.private_folder_create, name='private_folder_create'),
     path('private/download/<path:file_path>', views.private_download, name='private_download'),
+    path('private/upload', views.private_upload_file, name='private_upload'),
     path('group/file', views.group_bucket, name='group_bucket'),
     path('group/file/<path:folder_path>', views.group_bucket_file, name='group_bucket_file'),
     path('group/download/<path:file_path>', views.group_download, name='group_download'),
