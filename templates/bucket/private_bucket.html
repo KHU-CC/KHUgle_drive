@@ -67,15 +67,26 @@
 
     </tbody>
 
-    <div id = "cf" style="display:inline">
-        <button class="btn btn-primary" style="float:right; margin-left: 5px;" onclick="CreateFolder()">Create Folder</button>
-    </div>
-
-    <div class="abutton" style="float:right; display:inline">
-        <a href="" class="btn btn-primary">Post</a>
-    </div>
-
     
+
+    <form method='POST' style="display:inline"  enctype="multipart/form-data">
+        <div class="file-droppable" style="display:block">
+            <div>Drag and drop file here</div>
+            <span>&times;</span>
+            <input type="file" name="upload" />
+        </div>
+        <input class = "btn btn-primary" type="submit" value="Upload" style="vertical-align: middle"/>
+    </form>
+
+    <div id = "cf" style="display:inline">
+        <button class="btn btn-primary" style="float:right;" onclick="CreateFolder()">Create Folder</button>
+    </div>
+
+    <!-- <div class="abutton" style="float:right; display:inline">
+        <a href="" class="btn btn-primary">Post</a>
+    </div> -->
+      
+
 </div>
 {% endblock %}
 
