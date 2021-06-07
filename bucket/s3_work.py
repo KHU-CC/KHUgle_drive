@@ -8,7 +8,15 @@ from botocore.exceptions import ClientError
 # BASE_DIR = settings.BASE_DIR
 # MEDIA_DIR = settings.MEDIA_ROOT
 s3 = boto3.client(
+<<<<<<< HEAD
     's3'
+=======
+    's3',
+    aws_access_key_id='ASIARPQAACLCW4ZNZLBS',
+    aws_secret_access_key='nudBhWxj1zsoEvs1ceiMkFXcbGn40HjURKR+n3u5',
+    aws_session_token='FwoGZXIvYXdzELX//////////wEaDNDClsOaWI5hEdBk2CLCAbpNT0xxC8HdqSouMvHh9n09iGFnXUbk/MfBBfoLEWtxmzTiCBBvRY/rUArB++PDqiOu+2znNk9HgeBh+6LiKp2MBCqzbswubXKWlk1mcKvcMD57Odq7TERtdD7vf9KbhogVkc030vBPcOt4BDVbD11Akw/po0UWe1xkirIY2WjBxoLxUfPzHga/8krtrXKUyc34GRO7ekkNKjqsgYXYFl+kpT+iyV+JTp6ahOkv1BcYiqFKKmJ4fsbPRqeyPafMzzysKNuD+IUGMi3/kioG506jkgDjKFbS04jJMZ844htGJ0/qNrbjUwJNBfJI7N+HuwPq6PEarsg=',
+    region_name = 'us-east-1'
+>>>>>>> master
 )
 
 BUCKET = 'khugle-drive-admin'

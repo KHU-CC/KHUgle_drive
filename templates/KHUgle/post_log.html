@@ -1,0 +1,113 @@
+{% extends 'Base/base.html' %}
+{% load KHUgle_filter %}
+{% block content %}
+<div class="container my-3">
+    <p>{{user.major}} Group Board</p>
+    <p><a href="{% url 'bucket:group_download' file_path %}"> {{ file_path }}</a></p>
+    <table class="table">
+        <thead>
+        <tr class="text-center thead-dark">
+            <th>Number</th>
+            <th> ♥ </th>
+            <th style="width:50%">Title</th>
+            <th class="text-left">Author</th>
+            <th>Created</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        {% if post_list %}
+        {% for post in post_list %}
+        <tr class="text-center">
+            <td>{{ post_list.paginator.count|sub:post_list.start_index|sub:forloop.counter0|add:1 }}</td>
+            <td>
+                <span class="badge badge-warning px-2 py-1">{{ post.voter.all.count }}</span>
+            </td>
+            <td class="text-left">
+                <a href="{% url 'KHUgle:detail' post.id %}">{{ post.title }}</a>
+                {% if post.comment_set.count > 0 %}
+                <span class="text-danger small ml-2">{{ post.comment_set.count }}</span>
+                {% endif %}
+            </td> 
+            <td class="text-left">{{ post.author.username }} </td>
+            <td class="text-center">{{ post.created_at }}</td>
+        </tr>
+        {% endfor %}
+        {% else %}
+        <tr>
+            <td colspan="3">EMPTY</td>
+        </tr>
+        {% endif %}
+        </tbody>
+    </table>
+    
+    <ul class="pagination justify-content-center">
+ 
+        {% if post_list.has_previous %}
+        <li class="page-item">
+            <!-- <a class="page-link" href="?page={{ post_list.previous_page_number }}">Previous</a> -->
+            <a class="page-link" data-page="{{ post_list.previous_page_number }}" href="#">Previous</a>
+        </li>
+        {% else %}
+        <li class="page-item disabled">
+            <a class="page-link" tabindex="-1" aria-disabled="true" href="#">Previous</a>
+        </li>
+        {% endif %}
+      
+        {% for page_number in post_list.paginator.page_range %}
+        {% if page_number >= post_list.number|add:-5 and page_number <= post_list.number|add:5 %}
+            {% if page_number == post_list.number %}
+            <li class="page-item active" aria-current="page">
+                <!-- <a class="page-link" href="?page={{ page_number }}">{{ page_number }}</a> -->
+                <a class="page-link" data-page="{{ page_number }}" href="#">{{ page_number }}</a>
+            </li>
+            {% else %}
+            <li class="page-item">
+                <!-- <a class="page-link" href="?page={{ page_number }}">{{ page_number }}</a> -->
+                <a class="page-link" data-page="{{ page_number }}" href="#">{{ page_number }}</a>
+            </li>
+            {% endif %}
+        {% endif %}
+        {% endfor %}
+        <!-- 다음페이지 -->
+        {% if post_list.has_next %}
+        <li class="page-item">
+            <!-- <a class="page-link" href="?page={{ post_list.next_page_number }}">Next</a> -->
+            <a class="page-link" data-page="{{ post_list.next_page_number }}" href="#">Next</a>
+        </li>
+        {% else %}
+        <li class="page-item disabled">
+            <a class="page-link" tabindex="-1" aria-disabled="true" href="#">Next</a>
+        </li>
+        {% endif %}
+    </ul>
+
+</div>
+<form id="searchForm" method="get" action="{% url 'KHUgle:index' %}" >
+    <input type="hidden" id="kw" name="kw" value="{{ kw|default_if_none:'' }}">
+    <input type="hidden" id="page" name="page" value="{{ page }}">
+    <input type="hidden" id="so" name="so" value="{{ so }}">
+</form>
+{% endblock %}
+{% block script %}
+<script type='text/javascript'>
+$(document).ready(function(){
+    $(".page-link").on('click', function() {
+        $("#page").val($(this).data("page"));
+        $("#searchForm").submit();
+    });
+
+    $("#btn_search").on('click', function() {
+        $("#kw").val($(".kw").val());
+        $("#page").val(1);
+        $("#searchForm").submit();
+    });
+
+    $(".so").on('change', function() {
+        $("#so").val($(this).val());
+        $("#page").val(1);
+        $("#searchForm").submit();
+    });
+});
+</script>
+{% endblock %}

@@ -65,12 +65,12 @@ def post_create(request, folder_path):
             post.author = request.user
             post.created_at = timezone.now()
             post.major = request.user.major
+            post.file_path = folder_path + str(request.FILES.get('file'))
             post.save()
-            print(str(request.FILES.get('file')))
             for file in form.files:
                  s3.upload_file(str(request.FILES.get('file')), 'khugle-drive-'+request.user.username, folder_path + str(request.FILES.get('file')))
             
-            return redirect('bucket:private_bucket_file', folder_path=folder_path)
+            return redirect('bucket:group_bucket_file', folder_path=folder_path)
     else:
         form = PostForm()
     context = {'form': form}

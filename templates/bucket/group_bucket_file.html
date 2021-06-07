@@ -2,6 +2,17 @@
 {% load bucket_filter %}
 {% load static %}
 {% block content %}
+<script>
+    function CreateFolder(){
+    var item = $('#cf')
+    console.log(item.html())
+    item.html("<form action=\"{% url 'bucket:group_folder_create' current_path %}\" method='POST' style='float:right; margin-left: 5px'>\
+        <input type='text' id='folder' name='folder'>\
+        <input class ='btn btn-primary' type='submit' value='Create'>\
+    </form>")
+  }          
+</script>
+
 <div class="container my-3">
     <table class="table">
         <thead>
@@ -50,7 +61,7 @@
     {% for file in file_list %}
     <!-- <tr class="text-center"> -->
         {% if not file.is_folder %}
-        <div class ="items"><a href="{% url 'bucket:group_bucket_file' file.path %}"><img src="{% static './img/file.jpg' %}"></a>{{ file.name }}</div>
+        <div class ="items"><a href="{% url 'bucket:group_download' file.path %}"><img src="{% static './img/file.jpg' %}"></a>{{ file.name }}</div>
         {% endif %}
     <!-- </tr> -->
     {% endfor %}
@@ -63,12 +74,13 @@
 
     </tbody>
     
-    <a href="{% url 'KHUgle:post_create' current_path %}" class="btn btn-primary">Post</a>
-    
-    <form action="{% url 'bucket:group_folder_create' current_path %}" method="POST"> {% csrf_token %}
-        <input type="text" id="folder" name="folder">
-        <input type="submit">
-    </form>
+    <div id = "cf" style="display:inline">
+        <button class="btn btn-primary" style="float:right; margin-left: 5px;" onclick="CreateFolder()">Create Folder</button>
+    </div>
+
+    <div class="abutton" style="float:right; display:inline">
+        <a href="{% url 'KHUgle:post_create' current_path %}" class="btn btn-primary">Post</a>
+    </div>
 
 </div>
 {% endblock %}

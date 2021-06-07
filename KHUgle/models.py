@@ -46,6 +46,7 @@ class Post(models.Model):
     title = models.CharField(max_length=144)
     content = models.TextField()
     file = models.FileField(null=True, upload_to='static/files')
+    file_path = models.CharField(max_length=500)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(null=True, blank=True)
     voter = models.ManyToManyField(CustomUser, related_name='voter_post')
