@@ -21,6 +21,19 @@
     margin: 0px auto;
 }
 
+.grid-5 .itemsPrivate:hover{
+  background-color: mintcream;
+}
+
+.grid-5 .itemsPrivate img {
+  object-fit: cover;
+  width:100px;
+  display:block;
+  border-radius: 20px;
+  padding: 10px 6px 10px 6px;
+  margin: 0px auto;
+}
+
 img {
     object-fit: cover;
     width:150px;
@@ -71,5 +84,45 @@ img {
   }
   
   .contextmenu li:hover a {
+    color: #FFFFFF;
+  }
+
+  /* ================== */
+
+  .contextmenuPrivate {
+    display: none;
+    position: absolute;
+    width: 100px;
+    margin: 0;
+    padding: 0;
+    background: #FFFFFF;
+    border-radius: 5px;
+    list-style: none;
+    box-shadow:
+      0 15px 35px rgba(50,50,90,0.1),
+      0 5px 15px rgba(0,0,0,0.07);
+    overflow: hidden;
+    z-index: 999999;
+  }
+  
+  .contextmenuPrivate li {
+    border-left: 3px solid transparent;
+    transition: ease .2s;
+  }
+  
+  .contextmenuPrivate li a {
+    display: block;
+    padding: 10px;
+    color: #B0BEC5;
+    text-decoration: none;
+    transition: ease .2s;
+  }
+  
+  .contextmenuPrivate li:hover {
+    background: slategrey;
+    border-left: 3px solid gray;
+  }
+  
+  .contextmenuPrivate li:hover a {
     color: #FFFFFF;
   }

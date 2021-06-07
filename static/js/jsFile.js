@@ -88,18 +88,66 @@ $(document).ready(function(){
     });
   });
 
-function getCookie(name) {
-  var cookieValue = null;
-  if (document.cookie && document.cookie !== '') {
-      var cookies = document.cookie.split(';');
-      for (var i = 0; i < cookies.length; i++) {
-          var cookie = cookies[i].trim();
-          // Does this cookie string begin with the name we want?
-          if (cookie.substring(0, name.length + 1) === (name + '=')) {
-              cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-              break;
-          }
+  $(document).ready(function(){
+    //Show contextmenu:
+    $('.itemsPrivate').contextmenu(function(e){
+      
+      var item = $(this).text()
+      allPath = $(location).attr('pathname')
+      host = $(location).attr('host')
+      
+      var context = $('.contextmenuPrivate li a')
+      
+      allPathArry = allPath.split("/")
+      needPath1 = allPathArry.splice(1, 2).join('/')
+      needPath2 = allPathArry.splice(2, allPathArry.length-2).join('/')
+
+      context[0].href = "http://" + host + '/' + needPath1 +"/delete/" + needPath2 + item
+      context[1].href = "http://" + host + '/' + needPath1 +"/move/" + needPath2 + item
+      //Get window size:
+      var winWidth = $(document).width();
+      var winHeight = $(document).height();
+      //Get pointer position:
+      var posX = e.pageX;
+      var posY = e.pageY;
+      //Get contextmenu size:
+      var menuWidth = $(".contextmenuPrivate").width();
+      var menuHeight = $(".contextmenuPrivate").height();
+      //Security margin:
+      var secMargin = 10;
+      //Prevent page overflow:
+      if(posX + menuWidth + secMargin >= winWidth
+      && posY + menuHeight + secMargin >= winHeight){
+        //Case 1: right-bottom overflow:
+        posLeft = posX - menuWidth - secMargin + "px";
+        posTop = posY - menuHeight - secMargin + "px";
       }
-  }
-  return cookieValue;
-}
+      else if(posX + menuWidth + secMargin >= winWidth){
+        //Case 2: right overflow:
+        posLeft = posX - menuWidth - secMargin + "px";
+        posTop = posY + secMargin + "px";
+      }
+      else if(posY + menuHeight + secMargin >= winHeight){
+        //Case 3: bottom overflow:
+        posLeft = posX + secMargin + "px";
+        posTop = posY - menuHeight - secMargin + "px";
+      }
+      else {
+        //Case 4: default values:
+        posLeft = posX + secMargin + "px";
+        posTop = posY + secMargin + "px";
+      };
+      //Display contextmenu:
+      $(".contextmenuPrivate").css({
+        "left": posLeft,
+        "top": posTop
+      }).show();
+      //Prevent browser default contextmenu.
+
+      return false;
+    });
+    //Hide contextmenu:
+    $(document).click(function(){
+      $(".contextmenuPrivate").hide();
+    });
+  });

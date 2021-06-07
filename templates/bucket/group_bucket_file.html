@@ -8,7 +8,7 @@
     console.log(item.html())
     item.html("<form action=\"{% url 'bucket:group_folder_create' current_path %}\" method='POST' style='float:right; margin-left: 5px'>\
         <input type='text' id='folder' name='folder'>\
-        <input class ='btn btn-primary' type='submit'>\
+        <input class ='btn btn-primary' type='submit' value='Create'>\
     </form>")
   }          
 </script>
