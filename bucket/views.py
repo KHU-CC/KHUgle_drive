@@ -31,16 +31,19 @@ def private_bucket(request):
         file_list = s3.list_object('khugle-drive-' + user.username, '', user)
         return render(request, 'bucket/private_bucket.html', {'file_list' : file_list})
 
-    if request.method == 'POST' and request.FILES['upload']:
-        myfile = request.FILES['upload']
-        fs = FileSystemStorage("static/files")
-        filename = fs.save(myfile.name, myfile)
-        # uploaded_file_url = fs.url(filename)
-        print(filename)
-        # filename = str(filename)
-        s3.upload_file(filename, 'khugle-drive-'+request.user.username)
-        file_list = s3.list_object('khugle-drive-' + user.username, '', user)
-        return render(request, 'bucket/private_bucket.html', {'file_list' : file_list})
+    if request.method == 'POST':
+        try:
+            myfile = request.FILES['upload']
+            fs = FileSystemStorage("static/files")
+            filename = fs.save(myfile.name, myfile)
+            print(filename)
+            s3.upload_file(filename, 'khugle-drive-'+request.user.username)
+            file_list = s3.list_object('khugle-drive-' + user.username, '', user)
+            return render(request, 'bucket/private_bucket.html', {'file_list' : file_list})
+        except:
+            file_list = s3.list_object('khugle-drive-' + user.username, '', user)
+            return render(request, 'bucket/private_bucket.html', {'file_list' : file_list})
+
 
 @csrf_exempt
 @login_required(login_url='account:login')
@@ -57,21 +60,23 @@ def private_bucket_file(request, folder_path):
         file_list = s3.list_object(bucket_private, folder_path, user)
         return render(request, 'bucket/private_bucket_file.html', {'file_list' : file_list, 'current_path' : folder_path})
 
-    if request.method == 'POST' and request.FILES['upload']:
-        myfile = request.FILES['upload']
-        folders = folder_path.split('/')
-        folder_path = ''
+    if request.method == 'POST':
+        try:
+            myfile = request.FILES['upload']
+            folders = folder_path.split('/')
+            folder_path = ''
 
-        for i in range(len(folders)-1):
-            folder_path += folders[i] + '/'
-        fs = FileSystemStorage("static/files")
-        filename = fs.save(myfile.name, myfile)
-        
-        print(filename)
-        
-        s3.upload_file(filename, 'khugle-drive-'+request.user.username, folder_path+filename)
-        file_list = s3.list_object('khugle-drive-' + user.username, folder_path, user)
-        return render(request, 'bucket/private_bucket_file.html', {'file_list' : file_list, 'current_path' : folder_path})
+            for i in range(len(folders)-1):
+                folder_path += folders[i] + '/'
+            fs = FileSystemStorage("static/files")
+            filename = fs.save(myfile.name, myfile)
+            
+            s3.upload_file(filename, 'khugle-drive-'+request.user.username, folder_path+filename)
+            file_list = s3.list_object('khugle-drive-' + user.username, folder_path, user)
+            return render(request, 'bucket/private_bucket_file.html', {'file_list' : file_list, 'current_path' : folder_path})
+        except:
+            file_list = s3.list_object('khugle-drive-' + user.username, folder_path, user)
+            return render(request, 'bucket/private_bucket_file.html', {'file_list' : file_list, 'current_path' : folder_path})
 
 @login_required(login_url='account:login')
 def private_download(request, file_path):
