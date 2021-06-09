@@ -6,6 +6,7 @@ from rest_framework import viewsets, permissions, renderers
 from rest_framework.views import APIView
 from rest_framework.decorators import api_view
 from django.core.paginator import Paginator
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q, Count
 from django.views.decorators.csrf import csrf_exempt
@@ -34,9 +35,15 @@ def private_bucket(request):
     if request.method == 'POST':
         try:
             myfile = request.FILES['upload']
+
+            if s3.check_file_exist(bucket_private, '', myfile):
+                messages.info(request, "이미 존재하는 파일입니다.")
+                return redirect('/bucket/private/file/')
+
             fs = FileSystemStorage("static/files")
             filename = fs.save(myfile.name, myfile)
             print(filename)
+            messages.info(request, "성공적으로 파일을 저장했습니다.")
             s3.upload_file(filename, 'khugle-drive-'+request.user.username)
             file_list = s3.list_object('khugle-drive-' + user.username, '', user)
             return render(request, 'bucket/private_bucket.html', {'file_list' : file_list})
@@ -63,9 +70,13 @@ def private_bucket_file(request, folder_path):
     if request.method == 'POST':
         try:
             myfile = request.FILES['upload']
+
+            if s3.check_file_exist(bucket_private, folder_path, myfile):
+                messages.info(request, "이미 존재하는 파일입니다.")
+                return redirect('/bucket/private/file/' + folder_path)
+
             folders = folder_path.split('/')
             folder_path = ''
-
             for i in range(len(folders)-1):
                 folder_path += folders[i] + '/'
             fs = FileSystemStorage("static/files")
@@ -83,8 +94,17 @@ def private_download(request, file_path):
     user = request.user
     bucket_private = 'khugle-drive-' + user.username
     print("file_path : "+ file_path)
-    s3.download_file(bucket_private, file_path, 'static/files')
+
+    if settings.USER_OS == 'Windows':
+        download_path = settings.WINDOWS_DOWNLOAD_PATH
+    elif settings.USER_OS == "Darwins":
+        download_path = settings.MAC_DOWNLOAD_PATH
+
     folders = file_path.split('/')
+    file_name = folders[-1]
+
+    s3.download_file(bucket_private, file_path, download_path + '/' + file_name)
+
     if len(folders) == 1:
         return redirect('/bucket/private/file')
     new_path = '/'
@@ -97,7 +117,6 @@ def private_download(request, file_path):
 def private_file_delete(request, file_path):
     user = request.user
     bucket_private = 'khugle-drive-' + user.username
-    #bucket_major = 'khugle-drive-' + user.major.lower()
     print("file_path : "+ file_path)
     s3.delete_file(file_path, bucket_private)
     folders = file_path.split('/')
@@ -124,16 +143,19 @@ def private_folder_create(request, folder_path):
     user = request.user
     bucket_private = 'khugle-drive-' + user.username
     if request.method == 'POST':
-        print(folder_path + request.POST['folder'])
-        s3.make_directory(folder_path + request.POST['folder'], bucket_private, '')
+        if not s3.check_folder_exist(bucket_private, folder_path, request.POST['folder']):   
+            print(folder_path + request.POST['folder'])
+            s3.make_directory(folder_path + request.POST['folder'], bucket_private, '')
+            messages.info(request, '성공적으로 폴더를 생성했습니다.')
+        else:
+            messages.info(request, '이미 존재하는 폴더입니다.')
     return redirect('/bucket/private/file/' + folder_path)
 
 @login_required(login_url='account:login')
 def group_bucket(request):
     permission_classes = (permissions.IsAuthenticated,)
     user = request.user
-    bucket_major = 'khugle-drive-qwer2'
-    #bucket_major = 'khugle-drive-' + user.major.lower()
+    bucket_major = 'khugle-drive-' + user.major.lower()
 
     if request.method == 'GET':
         file_list = s3.list_object(bucket_major, '', user)
@@ -143,8 +165,7 @@ def group_bucket(request):
 def group_bucket_file(request, folder_path):
     permission_classes = (permissions.IsAuthenticated,)
     user = request.user
-    bucket_major = 'khugle-drive-qwer2'
-    #bucket_major = 'khugle-drive-' + user.major.lower()      
+    bucket_major = 'khugle-drive-' + user.major.lower()      
     folders = folder_path.split('/')
     folder_path = ''
     for i in range(len(folders)-1):
@@ -155,17 +176,29 @@ def group_bucket_file(request, folder_path):
 @login_required(login_url='account:login')
 def group_download(request, file_path):
     user = request.user
-    bucket_major = 'khugle-drive-qwer2'
+    bucket_major = 'khugle-drive-qwer'
+
     print("file_path : "+ file_path)
-    s3.download_file(bucket_major, file_path, 'static/files')
+
+    if settings.USER_OS == 'Windows':
+        download_path = settings.WINDOWS_DOWNLOAD_PATH
+    elif settings.USER_OS == "Darwins":
+        download_path = settings.MAC_DOWNLOAD_PATH
+
+    folders = file_path.split('/')
+    file_name = folders[-1]
+
+    s3.download_file(bucket_major, file_path, download_path + '/' + file_name)
+
     folders = file_path.split('/')
     if len(folders) == 1:
-        return redirect('/bucket/major/file')
+        return redirect('/bucket/group/file')
     new_path = '/'
     for i in range(len(folders) - 1):
         new_path += folders[i]
         new_path += '/'
-    return redirect('/bucket/major/file' + new_path)
+    
+    return redirect('/bucket/group/file' + new_path)
 
 @login_required(login_url='account:login')
 def group_file_log(request, file_path):
@@ -200,9 +233,26 @@ def group_file_log(request, file_path):
 @login_required(login_url='account:login')
 def group_file_delete(request, file_path):
 
+    # 해당 파일에 대한 글을 쓴 user와 현재 user가 같으면 Delete가능
+    folders = file_path.split('/')
+    new_path = '/'
+    for i in range(len(folders) - 1):
+        new_path += folders[i]
+        new_path += '/'
+
+    post_list = Post.objects.filter(file_path=file_path)
+    print(post_list)
+    if len(post_list) == 0 or request.user != post_list[0].author:
+        print("True")
+        messages.info(request, "업로드한 유저만 파일을 삭제할 수 있습니다.")
+        if len(folders) == 1:
+            return redirect('/bucket/group/file')
+        return redirect('/bucket/group/file' + new_path)
+
     form = DeletePostForm()
     
     if request.method == 'POST':
+
         form = DeletePostForm(request.POST)
         if form.is_valid():
             post = form.save(commit=False)
@@ -210,15 +260,10 @@ def group_file_delete(request, file_path):
             post.created_at = timezone.now()
             post.major = request.user.major
             post.save()
-            s3.delete_file(file_path, 'khugle-drive-qwer2')
+            s3.delete_file(file_path, 'khugle-drive-qwer')
             #s3.delete_file(file_path, 'khugle-drive-' + request.user.major)
-            folders = file_path.split('/')
             if len(folders) == 1:
                 return redirect('/bucket/group/file')
-            new_path = '/'
-            for i in range(len(folders) - 1):
-                new_path += folders[i]
-                new_path += '/'
             return redirect('/bucket/group/file' + new_path)
     context = {'form': form}
     return render(request, 'KHUgle/post_form.html', context)
@@ -227,20 +272,28 @@ def group_file_delete(request, file_path):
 @login_required(login_url='account:login')
 def group_bucket_create(request):
     user = request.user
-    bucket_major = 'khugle-drive-qwer2'
-    #bucket_major = 'khugle-drive-' + user.major.lower()
+    bucket_major = 'khugle-drive-' + user.major.lower()
     if request.method == 'POST':
-        s3.make_directory(request.POST['bucket'], bucket_major, '')
+        if not s3.check_folder_exist(bucket_major, '', request.POST['folder']):   
+            print(request.POST['folder'])
+            s3.make_directory(request.POST['folder'], bucket_major, '')
+            messages.info(request, '성공적으로 폴더를 생성했습니다.')
+        else:
+            messages.info(request, '이미 존재하는 폴더입니다.')
     return redirect('/bucket/group/file')
 
 @csrf_exempt
 @login_required(login_url='account:login')
 def group_folder_create(request, folder_path):
     user = request.user
-    bucket_major = 'khugle-drive-qwer2'
-    #bucket_major = 'khugle-drive-' + user.major.lower()
+    bucket_major = 'khugle-drive-' + user.major.lower()
     if request.method == 'POST':
-        s3.make_directory(folder_path + request.POST['folder'], bucket_major, '')
+        if not s3.check_folder_exist(bucket_major, folder_path, request.POST['folder']):   
+            print(folder_path + request.POST['folder'])
+            s3.make_directory(folder_path + request.POST['folder'], bucket_major, '')
+            messages.info(request, '성공적으로 폴더를 생성했습니다.')
+        else:
+            messages.info(request, '이미 존재하는 폴더입니다.')
     return redirect('/bucket/group/file/' + folder_path)
 
 @csrf_exempt

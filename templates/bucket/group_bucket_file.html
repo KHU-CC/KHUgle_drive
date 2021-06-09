@@ -81,6 +81,12 @@
     <div class="abutton" style="float:right; display:inline">
         <a href="{% url 'KHUgle:post_create' current_path %}" class="btn btn-primary">Post</a>
     </div>
-
 </div>
+{% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+        <li {% if message.tags %} class="{{ message.tags }}"{% endif %} style="float:right; margin-left: 5px;" >{{ message }}</li>
+        {% endfor %}
+    </ul>
+{% endif %}
 {% endblock %}

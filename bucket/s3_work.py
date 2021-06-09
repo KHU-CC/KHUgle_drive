@@ -9,9 +9,9 @@ from botocore.exceptions import ClientError
 # MEDIA_DIR = settings.MEDIA_ROOT
 s3 = boto3.client(
     's3',
-    aws_access_key_id='ASIARPQAACLC3Y5LYFTU',
-    aws_secret_access_key='6jFVexaP907HPhfb+cJc2HVWK5szSxZP6LgGWZJc',
-    aws_session_token='FwoGZXIvYXdzEND//////////wEaDNjX3s6dZyTuYnGU4yLCAXm8ftY/n18ApJH7/j5FXGs9R5Kez75sgEZ8R9TkXY2o1CDAMSVOxhHR/qxOyzadsYpvr/MBuNg0W8spN6SucYlFpWtVakmn8Dmmnl5zJXvy4Lr2HTt6iDyoRiYTwuYD+MS+AzSmPNw0YR2GL7Qa2e4dOPrUaUFA4CZ8Bbpxq908OLh1M42BZF7Q2sA19KEkldlNhMqe6rF9pfG9L9WzdecWw9zNGDCqEkTu/xsEStayqjVK3ZNYcaOhBygluucBRrYIKKT7/YUGMi2ogApGpZwGzarJAXEqtEMiUPX5tOMyzRdEDATjq0OgDVmgJjQvt1Frk/DD4y4=',
+    aws_access_key_id='ASIAVJ7ZLDLCQXQCKLQJ',
+    aws_secret_access_key='AqRGPuiwY+lUlx7kowr/d7np+G13/EGX6mFJxQTO',
+    aws_session_token='FwoGZXIvYXdzEOH//////////wEaDGKraqV53BM2esq2FCLCAZnEN79we5+ZARUuYhTuSlhHfOIC+dtvf4sz/T3kwf7HpmMTieGxUM4TN0EfMUXF0lge4jJbO9g0LvkFrcTuyCzpwzxKCLdTunlduvmxOtIQVTQ9tTQSS+r04zXqyaH0SNSD+sbZ9DYj0HiYZ61qzg3IFMsGzmiqrpacGNEqyFkwOsAjJEcSDVuSXji7aZYb3s9K4c1OoVo0/dRnXt5AoNN5sLq4M9+SodeRAybBKN+Tize3j1TWhrF9m6WvBZRIcaxEKOXkgYYGMi26yznOrgIv11fSXkVrksrqd5mXqtmfQu2y3tSz/68NH5TA55yKMph83+TkxJY=',
     region_name = 'us-east-1'
 )
 
@@ -73,3 +73,23 @@ def make_directory(dir_name, bucket, current_path):
 def create_bucket(bucket):
     response = s3.create_bucket(Bucket=bucket)
     return response
+
+def check_folder_exist(bucket, folder_path, folder_name):
+    response = s3.list_objects(Bucket=bucket, Prefix=folder_path, Delimiter='/')
+    folder_res = response.get('CommonPrefixes')
+    if folder_res:
+        for folder in folder_res:
+            print(folder.get('Prefix') + ' == ' + folder_path + folder_name + '/')
+            if folder.get('Prefix') == folder_path + folder_name + '/':
+                return True
+    return False
+
+def check_file_exist(bucket, file_path, file_name):
+    response = s3.list_objects(Bucket=bucket, Prefix=file_path, Delimiter='/')
+    file_res = response.get('Contents')
+    if file_res:
+        for file in file_res:
+            print(file)
+            if file.get('Key') == file_path:
+                return False
+    return True

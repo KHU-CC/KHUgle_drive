@@ -1,0 +1,1 @@
+print('power'[4:3])

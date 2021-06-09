@@ -57,10 +57,16 @@ def detail(request, post_id):
 @login_required(login_url='account:login')
 def post_create(request, folder_path):
     form = PostForm()
-    
+    user = request.user
+    bucket_group = 'khugle-drive-qwer'
+
     if request.method == 'POST':
         form = PostForm(request.POST, request.FILES)
+        filename = str(request.FILES.get('file'))
         if form.is_valid():
+            if s3.check_file_exist(bucket_group, folder_path, filename):
+                messages.info(request, "이미 존재하는 파일입니다.")
+                return redirect('/bucket/group/file/' + folder_path)
             post = form.save(commit=False)
             post.author = request.user
             post.created_at = timezone.now()
@@ -68,7 +74,7 @@ def post_create(request, folder_path):
             post.file_path = folder_path + str(request.FILES.get('file'))
             post.save()
             for file in form.files:
-                 s3.upload_file(str(request.FILES.get('file')), 'khugle-drive-'+request.user.username, folder_path + str(request.FILES.get('file')))
+                 s3.upload_file(str(request.FILES.get('file')), bucket_group, folder_path + filename)
             
             return redirect('bucket:group_bucket_file', folder_path=folder_path)
     else:

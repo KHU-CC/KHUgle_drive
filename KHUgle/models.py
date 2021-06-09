@@ -38,8 +38,6 @@ from account.models import CustomUser
 #         # shell에서 DB확인을 위해 출력 용도로 작성
 #         return self.title
 
-
-
 class Post(models.Model):
     """Model representing community posts"""
     author = models.ForeignKey(CustomUser, on_delete=models.CASCADE) #커스텀 유저 모델과 연결
