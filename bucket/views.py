@@ -38,7 +38,7 @@ def private_bucket(request):
 
             if s3.check_file_exist(bucket_private, '', myfile):
                 messages.info(request, "이미 존재하는 파일입니다.")
-                return redirect('/bucket/private/file/')
+                return redirect('/bucket/private/file')
 
             fs = FileSystemStorage("static/files")
             filename = fs.save(myfile.name, myfile)
@@ -117,6 +117,7 @@ def private_download(request, file_path):
 def private_file_delete(request, file_path):
     user = request.user
     bucket_private = 'khugle-drive-' + user.username
+    #bucket_major = 'khugle-drive-' + user.major.lower()
     print("file_path : "+ file_path)
     s3.delete_file(file_path, bucket_private)
     folders = file_path.split('/')
@@ -155,7 +156,8 @@ def private_folder_create(request, folder_path):
 def group_bucket(request):
     permission_classes = (permissions.IsAuthenticated,)
     user = request.user
-    bucket_major = 'khugle-drive-' + user.major.lower()
+    bucket_major = 'khugle-drive-testtesttest'
+    #bucket_major = 'khugle-drive-' + user.major.lower()
 
     if request.method == 'GET':
         file_list = s3.list_object(bucket_major, '', user)
@@ -165,7 +167,8 @@ def group_bucket(request):
 def group_bucket_file(request, folder_path):
     permission_classes = (permissions.IsAuthenticated,)
     user = request.user
-    bucket_major = 'khugle-drive-' + user.major.lower()      
+    bucket_major = 'khugle-drive-testtesttest'
+    #bucket_major = 'khugle-drive-' + user.major.lower()      
     folders = folder_path.split('/')
     folder_path = ''
     for i in range(len(folders)-1):
@@ -176,7 +179,7 @@ def group_bucket_file(request, folder_path):
 @login_required(login_url='account:login')
 def group_download(request, file_path):
     user = request.user
-    bucket_major = 'khugle-drive-qwer'
+    bucket_major = 'khugle-drive-testtesttest'
 
     print("file_path : "+ file_path)
 
@@ -260,7 +263,7 @@ def group_file_delete(request, file_path):
             post.created_at = timezone.now()
             post.major = request.user.major
             post.save()
-            s3.delete_file(file_path, 'khugle-drive-qwer')
+            s3.delete_file(file_path, 'khugle-drive-testtesttest')
             #s3.delete_file(file_path, 'khugle-drive-' + request.user.major)
             if len(folders) == 1:
                 return redirect('/bucket/group/file')
@@ -272,7 +275,8 @@ def group_file_delete(request, file_path):
 @login_required(login_url='account:login')
 def group_bucket_create(request):
     user = request.user
-    bucket_major = 'khugle-drive-' + user.major.lower()
+    bucket_major = 'khugle-drive-testtesttest'
+    #bucket_major = 'khugle-drive-' + user.major.lower()
     if request.method == 'POST':
         if not s3.check_folder_exist(bucket_major, '', request.POST['folder']):   
             print(request.POST['folder'])
@@ -286,7 +290,8 @@ def group_bucket_create(request):
 @login_required(login_url='account:login')
 def group_folder_create(request, folder_path):
     user = request.user
-    bucket_major = 'khugle-drive-' + user.major.lower()
+    bucket_major = 'khugle-drive-testtesttest'
+    #bucket_major = 'khugle-drive-' + user.major.lower()
     if request.method == 'POST':
         if not s3.check_folder_exist(bucket_major, folder_path, request.POST['folder']):   
             print(folder_path + request.POST['folder'])
