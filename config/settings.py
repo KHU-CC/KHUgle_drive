@@ -20,9 +20,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 USER_OS = platform.system()
 
-WINDOWS_DOWNLOAD_PATH = os.path.join("C:\\Users", getpass.getuser(), "Downloads")
+WINDOWS_DOWNLOAD_PATH = os.path.expandvars("%userprofile%/Downloads")
 MAC_DOWNLOAD_PATH = os.path.join("Users", getpass.getuser(), "Downloads")
-
+UBUNTU_DOWNLOAD_PATH = os.path.join("/home",getpass.getuser(),"Downloads")
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
@@ -32,7 +32,7 @@ SECRET_KEY = 'django-insecure-e)+typ*%q%=-9=5%phkw#e24&tiag4^1xro24yo-cn$_amas*o
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["khugledrive.bu.to","184.73.206.39","ip-10-0-2-40"]
 
 
 # Application definition

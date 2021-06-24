@@ -25,7 +25,8 @@
         <tr class="text-center thead-dark">
             <th>Number</th>
             <th> ♥ </th>
-            <th style="width:50%">Title</th>
+            <th style="width:30%">Title</th>
+            <th class="text-center">File</th>
             <th class="text-left">Author</th>
             <th>Created</th>
         </tr>
@@ -45,6 +46,7 @@
                 <span class="text-danger small ml-2">{{ post.comment_set.count }}</span>
                 {% endif %}
             </td> 
+            <td class="text-class">{{ post.file_path }}</td>
             <td class="text-left">{{ post.author.username }} </td>
             <td class="text-center">{{ post.created_at }}</td>
         </tr>

@@ -58,13 +58,14 @@ def detail(request, post_id):
 def post_create(request, folder_path):
     form = PostForm()
     user = request.user
-    bucket_group = 'khugle-drive-qwer'
+    bucket_group = 'khugle-drive-'+user.major.lower()
 
     if request.method == 'POST':
         form = PostForm(request.POST, request.FILES)
         filename = str(request.FILES.get('file'))
+        print(filename)
         if form.is_valid():
-            if s3.check_file_exist(bucket_group, folder_path, filename):
+            if not s3.check_file_exist(bucket_group, folder_path, filename):
                 messages.info(request, "이미 존재하는 파일입니다.")
                 return redirect('/bucket/group/file/' + folder_path)
             post = form.save(commit=False)
@@ -75,7 +76,7 @@ def post_create(request, folder_path):
             post.save()
             for file in form.files:
                  s3.upload_file(str(request.FILES.get('file')), bucket_group, folder_path + filename)
-            
+            messages.info(request, "파일이 성공적으로 업로드 되었습니다.")
             return redirect('bucket:group_bucket_file', folder_path=folder_path)
     else:
         form = PostForm()
@@ -153,3 +154,31 @@ def vote_comment(request, comment_id):
     comment = get_object_or_404(Comment, pk=comment_id)
     comment.voter.add(request.user)
     return redirect('KHUgle:detail', post_id=comment.post.id)
+
+@login_required(login_url='account:login')
+def post_create_upper(request):
+    form = PostForm()
+    user = request.user
+    bucket_group = 'khugle-drive-'+user.major.lower()
+
+    if request.method == 'POST':
+        form = PostForm(request.POST, request.FILES)
+        filename = str(request.FILES.get('file'))
+        if form.is_valid():
+            if s3.check_file_exist(bucket_group, '', filename):
+                messages.info(request, "이미 존재하는 파일입니다.")
+                return redirect('/bucket/group/file')
+            post = form.save(commit=False)
+            post.author = request.user
+            post.created_at = timezone.now()
+            post.major = request.user.major
+            post.file_path = str(request.FILES.get('file'))
+            post.save()
+            for file in form.files:
+                 s3.upload_file(str(request.FILES.get('file')), bucket_group, filename)
+            messages.info(request, "파일이 성공적으로 업로드 되었습니다.")
+            return redirect('bucket:group_bucket')
+    else:
+        form = PostForm()
+    context = {'form': form}
+    return render(request, 'KHUgle/post_form.html', context)

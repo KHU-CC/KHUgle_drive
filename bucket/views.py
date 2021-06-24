@@ -38,7 +38,7 @@ def private_bucket(request):
 
             if s3.check_file_exist(bucket_private, '', myfile):
                 messages.info(request, "이미 존재하는 파일입니다.")
-                return redirect('/bucket/private/file/')
+                return redirect('/bucket/private/file')
 
             fs = FileSystemStorage("static/files")
             filename = fs.save(myfile.name, myfile)
@@ -103,8 +103,11 @@ def private_download(request, file_path):
     folders = file_path.split('/')
     file_name = folders[-1]
 
-    s3.download_file(bucket_private, file_path, download_path + '/' + file_name)
-
+    #s3.download_file(bucket_private, file_path, download_path + '/' + file_name)
+    res = s3.download_file(bucket_private, file_path, "")
+    print(res)
+    return redirect(res)
+    '''
     if len(folders) == 1:
         return redirect('/bucket/private/file')
     new_path = '/'
@@ -112,6 +115,7 @@ def private_download(request, file_path):
         new_path += folders[i]
         new_path += '/'
     return redirect('/bucket/private/file' + new_path)
+    '''
 
 @login_required(login_url='account:login')
 def private_file_delete(request, file_path):
@@ -134,8 +138,14 @@ def private_bucket_create(request):
     user = request.user
     bucket_private = 'khugle-drive-' + user.username
     if request.method == 'POST':
-        s3.make_directory(request.POST['bucket'], bucket_private, '')
+        if not s3.check_folder_exist(bucket_private, "", request.POST['bucket']):   
+            print("" + request.POST['bucket'])
+            s3.make_directory(request.POST['bucket'], bucket_private, '')
+            messages.info(request, '성공적으로 폴더를 생성했습니다.')
+        else:
+            messages.info(request, '이미 존재하는 폴더입니다.')
     return redirect('/bucket/private/file')
+
 
 @csrf_exempt
 @login_required(login_url='account:login')
@@ -176,20 +186,24 @@ def group_bucket_file(request, folder_path):
 @login_required(login_url='account:login')
 def group_download(request, file_path):
     user = request.user
-    bucket_major = 'khugle-drive-qwer'
-
+    bucket_major = 'khugle-drive-'+user.major.lower()
+    
     print("file_path : "+ file_path)
 
-    if settings.USER_OS == 'Windows':
-        download_path = settings.WINDOWS_DOWNLOAD_PATH
-    elif settings.USER_OS == "Darwins":
-        download_path = settings.MAC_DOWNLOAD_PATH
-
+    #if settings.USER_OS == 'Windows':
+    download_path = settings.WINDOWS_DOWNLOAD_PATH
+    #elif settings.USER_OS == "Darwins":
+    #    download_path = settings.MAC_DOWNLOAD_PATH
+    #else:
+    #    download_path = settings.UBUNTU_DOWNLOAD_PATH
     folders = file_path.split('/')
     file_name = folders[-1]
 
-    s3.download_file(bucket_major, file_path, download_path + '/' + file_name)
-
+    #s3.download_file(bucket_major, file_path, download_path + '/' + file_name)
+    res = s3.download_file(bucket_major, file_path, "")
+    print(res)
+    return redirect(res)
+    '''
     folders = file_path.split('/')
     if len(folders) == 1:
         return redirect('/bucket/group/file')
@@ -199,7 +213,7 @@ def group_download(request, file_path):
         new_path += '/'
     
     return redirect('/bucket/group/file' + new_path)
-
+    '''
 @login_required(login_url='account:login')
 def group_file_log(request, file_path):
     """커뮤니티 인덱스 페이지"""
@@ -260,7 +274,7 @@ def group_file_delete(request, file_path):
             post.created_at = timezone.now()
             post.major = request.user.major
             post.save()
-            s3.delete_file(file_path, 'khugle-drive-qwer')
+            s3.delete_file(file_path, 'khugle-drive-'+request.user.major.lower())
             #s3.delete_file(file_path, 'khugle-drive-' + request.user.major)
             if len(folders) == 1:
                 return redirect('/bucket/group/file')
@@ -274,9 +288,9 @@ def group_bucket_create(request):
     user = request.user
     bucket_major = 'khugle-drive-' + user.major.lower()
     if request.method == 'POST':
-        if not s3.check_folder_exist(bucket_major, '', request.POST['folder']):   
-            print(request.POST['folder'])
-            s3.make_directory(request.POST['folder'], bucket_major, '')
+        if not s3.check_folder_exist(bucket_major, '', request.POST['bucket']):   
+            print(request.POST['bucket'])
+            s3.make_directory(request.POST['bucket'], bucket_major, '')
             messages.info(request, '성공적으로 폴더를 생성했습니다.')
         else:
             messages.info(request, '이미 존재하는 폴더입니다.')

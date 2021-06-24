@@ -8,11 +8,7 @@ from botocore.exceptions import ClientError
 # BASE_DIR = settings.BASE_DIR
 # MEDIA_DIR = settings.MEDIA_ROOT
 s3 = boto3.client(
-    's3',
-    aws_access_key_id='ASIAVJ7ZLDLCQXQCKLQJ',
-    aws_secret_access_key='AqRGPuiwY+lUlx7kowr/d7np+G13/EGX6mFJxQTO',
-    aws_session_token='FwoGZXIvYXdzEOH//////////wEaDGKraqV53BM2esq2FCLCAZnEN79we5+ZARUuYhTuSlhHfOIC+dtvf4sz/T3kwf7HpmMTieGxUM4TN0EfMUXF0lge4jJbO9g0LvkFrcTuyCzpwzxKCLdTunlduvmxOtIQVTQ9tTQSS+r04zXqyaH0SNSD+sbZ9DYj0HiYZ61qzg3IFMsGzmiqrpacGNEqyFkwOsAjJEcSDVuSXji7aZYb3s9K4c1OoVo0/dRnXt5AoNN5sLq4M9+SodeRAybBKN+Tize3j1TWhrF9m6WvBZRIcaxEKOXkgYYGMi26yznOrgIv11fSXkVrksrqd5mXqtmfQu2y3tSz/68NH5TA55yKMph83+TkxJY=',
-    region_name = 'us-east-1'
+    's3'
 )
 
 BUCKET = 'khugle-drive-admin'
@@ -43,7 +39,14 @@ def list_object(bucket, folder_path, user):
 
 
 def download_file(bucket, file_path, download_path):
-    response = s3.download_file(bucket, file_path, download_path)
+    #response = s3.download_file(bucket, file_path, download_path)
+    response = s3.generate_presigned_url(
+        ClientMethod='get_object',
+        Params={
+            'Bucket':bucket,
+            'Key':file_path
+        }
+    )
     return response
 
 def move_file(old_file_path, bucket, new_file_path):
@@ -91,5 +94,5 @@ def check_file_exist(bucket, file_path, file_name):
         for file in file_res:
             print(file)
             if file.get('Key') == file_path:
-                return False
-    return True
+                return True
+    return False
