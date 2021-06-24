@@ -121,6 +121,7 @@ def private_download(request, file_path):
 def private_file_delete(request, file_path):
     user = request.user
     bucket_private = 'khugle-drive-' + user.username
+    #bucket_major = 'khugle-drive-' + user.major.lower()
     print("file_path : "+ file_path)
     s3.delete_file(file_path, bucket_private)
     folders = file_path.split('/')
@@ -165,7 +166,8 @@ def private_folder_create(request, folder_path):
 def group_bucket(request):
     permission_classes = (permissions.IsAuthenticated,)
     user = request.user
-    bucket_major = 'khugle-drive-' + user.major.lower()
+    bucket_major = 'khugle-drive-testtesttest'
+    #bucket_major = 'khugle-drive-' + user.major.lower()
 
     if request.method == 'GET':
         file_list = s3.list_object(bucket_major, '', user)
@@ -175,7 +177,8 @@ def group_bucket(request):
 def group_bucket_file(request, folder_path):
     permission_classes = (permissions.IsAuthenticated,)
     user = request.user
-    bucket_major = 'khugle-drive-' + user.major.lower()      
+    bucket_major = 'khugle-drive-testtesttest'
+    #bucket_major = 'khugle-drive-' + user.major.lower()      
     folders = folder_path.split('/')
     folder_path = ''
     for i in range(len(folders)-1):
@@ -286,7 +289,8 @@ def group_file_delete(request, file_path):
 @login_required(login_url='account:login')
 def group_bucket_create(request):
     user = request.user
-    bucket_major = 'khugle-drive-' + user.major.lower()
+    bucket_major = 'khugle-drive-testtesttest'
+    #bucket_major = 'khugle-drive-' + user.major.lower()
     if request.method == 'POST':
         if not s3.check_folder_exist(bucket_major, '', request.POST['bucket']):   
             print(request.POST['bucket'])
@@ -300,7 +304,8 @@ def group_bucket_create(request):
 @login_required(login_url='account:login')
 def group_folder_create(request, folder_path):
     user = request.user
-    bucket_major = 'khugle-drive-' + user.major.lower()
+    bucket_major = 'khugle-drive-testtesttest'
+    #bucket_major = 'khugle-drive-' + user.major.lower()
     if request.method == 'POST':
         if not s3.check_folder_exist(bucket_major, folder_path, request.POST['folder']):   
             print(folder_path + request.POST['folder'])
